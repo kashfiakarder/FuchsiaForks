@@ -9,6 +9,7 @@ import EventDetailPage from '@/pages/EventDetailPage';
 import EventChatPage from '@/pages/EventChatPage';
 import SpotDetailPage from '@/pages/SpotDetailPage';
 import MyEventsPage from '@/pages/MyEventsPage';
+import ProfilePage from '@/pages/ProfilePage';
 import NotFoundPage from '@/pages/NotFoundPage';
 import { useAppState } from '@/state/AppState';
 
@@ -37,6 +38,8 @@ export default function App() {
           <Route path="/chats" element={<EventChatPage />} />
           <Route path="/chats/:eventId" element={<EventChatPage />} />
           <Route path="/my-events" element={<MyEventsPage />} />
+          <Route path="/profile" element={<ProfilePage own />} />
+          <Route path="/artists/:userId" element={<ProfilePage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

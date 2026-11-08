@@ -13,7 +13,8 @@ import { Link as RouterLink, useSearchParams } from 'react-router-dom';
 
 import EventCard from '@/components/events/EventCard';
 import SpotCard from '@/components/events/SpotCard';
-import { SPOTS, getSpot } from '@/data/mockData';
+import ArtistCard from '@/components/profile/ArtistCard';
+import { ALL_PEOPLE, CURRENT_USER, SPOTS, getSpot } from '@/data/mockData';
 
 /**
  * OpenLayers is a third of a megabyte. Loading it lazily means the rest of
@@ -82,6 +83,20 @@ export default function DiscoverPage() {
     () => (selectedSpotId && spots.some((s) => s.id === selectedSpotId) ? getSpot(selectedSpotId) : null),
     [selectedSpotId, spots],
   );
+
+  // The artist directory. Private profiles are listed too — the person is
+  // not hidden, only their gallery is.
+  const artists = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return ALL_PEOPLE.filter(
+      (p) =>
+        p.id !== CURRENT_USER.id &&
+        (!q ||
+          p.name.toLowerCase().includes(q) ||
+          p.handle.toLowerCase().includes(q) ||
+          (p.mediums ?? []).some((m) => m.toLowerCase().includes(q))),
+    );
+  }, [query]);
 
   const events = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -230,6 +245,32 @@ export default function DiscoverPage() {
               : `Show all ${spots.length} spots`}
           </Button>
         </Box>
+      ) : null}
+
+      {artists.length ? (
+        <>
+          <Typography variant="h3" component="h2" sx={{ mt: 5, mb: 0.75 }} id="artists">
+            Artists near you
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+            Some keep their gallery private. You can still find them at paint-outs.
+          </Typography>
+          <Box
+            sx={{
+              display: 'grid',
+              gap: 2.5,
+              gridTemplateColumns: {
+                xs: '1fr',
+                sm: 'repeat(2, minmax(0, 1fr))',
+                lg: 'repeat(4, minmax(0, 1fr))',
+              },
+            }}
+          >
+            {artists.map((person) => (
+              <ArtistCard key={person.id} person={person} />
+            ))}
+          </Box>
+        </>
       ) : null}
 
       <Box

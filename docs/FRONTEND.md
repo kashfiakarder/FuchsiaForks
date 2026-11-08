@@ -21,10 +21,53 @@ npm run preview  # serve the built bundle
 | `/events/:eventId` | Event detail, join/leave, meeting point, gallery |
 | `/chats/:eventId` | Event chat with conversation list and composer |
 | `/my-events` | Upcoming and past, sortable, with status chips |
+| `/profile` | Your own profile — personal info, privacy setting, gallery |
+| `/artists/:userId` | Anyone else's profile; gallery shown only if public |
 
 `/discover` was not in the supplied designs, but every header links to it,
 so the app needs it to hold together. It is built from the same components
 and rhythm as the screens that were specified.
+
+## Profiles and privacy
+
+Every person in the app is clickable — chat avatars and names, event
+hosts, review authors, the attendee stacks on event cards, and the artist
+directory on Discover. They all route through
+`components/common/PersonLink.jsx`, which also decides where your own
+profile goes (`/profile`, not `/artists/u-alex`).
+
+**There is one privacy rule, and it lives in one function.**
+`canViewGallery(userId)` in `state/AppState.jsx`:
+
+- a **public** profile's art gallery is visible to anyone
+- a **private** profile's gallery is visible only to its owner
+
+Everything that renders gallery content asks that function rather than
+reading `visibility` itself, so the rule cannot drift apart between the
+profile page, the artist cards and anywhere added later. Nothing else is
+gated: a private profile still shows its name, bio, mediums, follower
+counts and the events it hosts. Only the work is held back.
+
+The piece count is shown even on a locked gallery. That is deliberate —
+the count is the profile's own fact, the contents are not. It has to be
+read from the seed data rather than the filtered list, or a private
+gallery would always report zero.
+
+`ProfilePage.jsx` serves both your profile and everyone else's. Keeping
+them in one component is what guarantees a private profile looks the same
+to its owner as a public one does, minus the lock; two pages would drift.
+
+Your own visibility is toggled in Profile settings and lives in
+`AppState`, so it survives a refresh. Everyone else's is fixed in
+`data/mockData.js` — Jamie Lee and Priya Shah are private, so the locked
+state is always demonstrable.
+
+Gallery posts are in `data/gallery.js`. A post is either an `artwork` (a
+piece, shown in a mat and frame) or a `moment` (a photo from a session).
+Both can link back to a spot and an event, which is what ties a profile
+into the rest of the app. "Add to gallery" picks from the same
+illustration set rather than faking an uploader that would lose your
+image on refresh.
 
 ## The map
 

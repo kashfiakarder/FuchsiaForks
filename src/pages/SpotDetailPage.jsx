@@ -21,7 +21,8 @@ import WbSunnyOutlinedIcon from '@mui/icons-material/WbSunnyOutlined';
 import PageBreadcrumbs from '@/components/common/PageBreadcrumbs';
 import SceneImage from '@/components/common/SceneImage';
 import Stars from '@/components/common/Stars';
-import { AttendeeStack, PersonAvatar } from '@/components/common/PersonAvatar';
+import { AttendeeStack } from '@/components/common/PersonAvatar';
+import PersonLink from '@/components/common/PersonLink';
 import ReviewDialog from '@/components/reviews/ReviewDialog';
 import ShareMenu from '@/components/common/ShareMenu';
 import NotFoundPage from './NotFoundPage';
@@ -250,29 +251,31 @@ export default function SpotDetailPage() {
 
           {reviews.length ? (
             reviews.slice(0, 4).map((review, i) => {
-              const author = PEOPLE[review.authorId];
               return (
                 <Box key={review.id}>
                   {i > 0 ? <Divider sx={{ my: 2 }} /> : null}
-                  <Stack direction="row" spacing={1.5} sx={{ pt: i === 0 ? 1.5 : 0 }}>
-                    <PersonAvatar personId={review.authorId} size={34} />
+                  <Box sx={{ pt: i === 0 ? 1.5 : 0 }}>
                     <Box sx={{ flex: 1, minWidth: 0 }}>
                       <Stack direction="row" sx={{ alignItems: "flex-start", justifyContent: "space-between", gap: 1 }}>
-                        <Box>
-                          <Typography variant="h6">{author?.name ?? 'Someone'}</Typography>
-                          <Typography variant="caption" color="text.secondary">
-                            {formatReviewDate(review.date)}
-                          </Typography>
-                        </Box>
+                        <PersonLink
+                          personId={review.authorId}
+                          size={34}
+                          nameVariant="h6"
+                          secondary={formatReviewDate(review.date)}
+                        />
                         <Stars value={review.rating} size={16} />
                       </Stack>
                       {review.body ? (
-                        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                        <Typography
+                          variant="body2"
+                          color="text.secondary"
+                          sx={{ mt: 1, pl: { sm: '46px' } }}
+                        >
                           {review.body}
                         </Typography>
                       ) : null}
                     </Box>
-                  </Stack>
+                  </Box>
                 </Box>
               );
             })

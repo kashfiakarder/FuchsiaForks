@@ -21,9 +21,10 @@ import PageBreadcrumbs from '@/components/common/PageBreadcrumbs';
 import PhotoLightbox from '@/components/common/PhotoLightbox';
 import ShareMenu from '@/components/common/ShareMenu';
 import SceneImage from '@/components/common/SceneImage';
-import { AttendeeStack, PersonAvatar } from '@/components/common/PersonAvatar';
+import { AttendeeStack } from '@/components/common/PersonAvatar';
+import PersonLink from '@/components/common/PersonLink';
 import NotFoundPage from './NotFoundPage';
-import { PEOPLE, getSpot } from '@/data/mockData';
+import { getSpot } from '@/data/mockData';
 import { formatLongDate, formatTimeRange, formatWeekdayDate } from '@/data/format';
 import { useAppState } from '@/state/AppState';
 import { RADIUS, cardSx, tintSx } from '@/theme';
@@ -38,7 +39,6 @@ export default function EventDetailPage() {
   if (!event) return <NotFoundPage />;
 
   const spot = getSpot(event.spotId);
-  const host = PEOPLE[event.hostId];
   const hosting = isHosting(event.id);
   const joined = isJoined(event.id);
 
@@ -107,15 +107,17 @@ export default function EventDetailPage() {
             />
           </Box>
 
-          <Stack direction="row" spacing={1.25} sx={{ alignItems: "center", mt: 1.5 }}>
-            <PersonAvatar personId={event.hostId} size={28} />
+          <Stack
+            direction="row"
+            spacing={1.25}
+            sx={{ alignItems: 'center', mt: 1.5, flexWrap: 'wrap', rowGap: 0.75 }}
+          >
             <Typography variant="body2" color="text.secondary">
-              Hosted by{' '}
-              <Box component="span" sx={{ color: 'text.primary', fontWeight: 600 }}>
-                {hosting ? 'you' : host.name}
-              </Box>
-              {'  ·  '}
-              {event.skillNote}
+              Hosted by
+            </Typography>
+            <PersonLink personId={event.hostId} size={28} nameVariant="body2" />
+            <Typography variant="body2" color="text.secondary">
+              · {event.skillNote}
             </Typography>
           </Stack>
 

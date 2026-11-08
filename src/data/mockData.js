@@ -7,22 +7,102 @@
  * later is a change of data source, not a change of components.
  */
 
+/**
+ * Profiles.
+ *
+ * `visibility` is the whole privacy model: a public profile shows its
+ * gallery to anyone, a private one shows it only to its owner. Everything
+ * that renders a person reads it from here, so there is one source of
+ * truth for who can see what.
+ *
+ * The signed-in user's own visibility is overridden by `AppState`, which
+ * lets it be toggled at runtime; the values below are the starting point.
+ */
 export const CURRENT_USER = {
   id: 'u-alex',
   name: 'Alex Laurent',
   initials: 'AL',
   firstName: 'Alex',
+  handle: 'alexlaurent',
   city: 'Calgary, Alberta',
   tint: '#F1DCEE',
+  visibility: 'public',
+  pronouns: 'they/them',
+  bio: 'Watercolours, mostly. Happiest on a riverbank before the light gets flat. Trying to paint outside once a week, rain or snow.',
+  mediums: ['Watercolour', 'Gouache', 'Ink'],
+  joined: '2025-04-12',
+  followers: 128,
+  following: 96,
 };
 
 export const PEOPLE = {
-  'u-maya': { id: 'u-maya', name: 'Maya Chen', initials: 'MC', tint: '#DCE8DC' },
-  'u-jamie': { id: 'u-jamie', name: 'Jamie Lee', initials: 'JL', tint: '#F7E3D4' },
-  'u-sam': { id: 'u-sam', name: 'Sam Wilson', initials: 'SW', tint: '#DDE4F2' },
-  'u-priya': { id: 'u-priya', name: 'Priya Shah', initials: 'PS', tint: '#F6DCE8' },
+  'u-maya': {
+    id: 'u-maya',
+    name: 'Maya Chen',
+    initials: 'MC',
+    handle: 'mayachen',
+    tint: '#DCE8DC',
+    visibility: 'public',
+    pronouns: 'she/her',
+    city: 'Calgary, Alberta',
+    bio: 'Oil painter and reluctant early riser. I host the creekside sessions at Fish Creek and will absolutely talk your ear off about colour temperature.',
+    mediums: ['Oil', 'Charcoal'],
+    joined: '2023-09-02',
+    followers: 412,
+    following: 180,
+  },
+  'u-jamie': {
+    id: 'u-jamie',
+    name: 'Jamie Lee',
+    initials: 'JL',
+    handle: 'jamie.draws',
+    tint: '#F7E3D4',
+    visibility: 'private',
+    pronouns: 'they/them',
+    city: 'Calgary, Alberta',
+    bio: 'Quiet sessions, small sketchbooks, no small talk until the coffee break.',
+    mediums: ['Watercolour', 'Pencil'],
+    joined: '2024-01-18',
+    followers: 87,
+    following: 143,
+  },
+  'u-sam': {
+    id: 'u-sam',
+    name: 'Sam Wilson',
+    initials: 'SW',
+    handle: 'samwilsonart',
+    tint: '#DDE4F2',
+    visibility: 'public',
+    pronouns: 'he/him',
+    city: 'Calgary, Alberta',
+    bio: 'Urban sketcher. Skylines, bridges, anything with a hard edge against a soft sky. Golden hour or nothing.',
+    mediums: ['Ink', 'Marker', 'Digital'],
+    joined: '2023-11-27',
+    followers: 356,
+    following: 211,
+  },
+  'u-priya': {
+    id: 'u-priya',
+    name: 'Priya Shah',
+    initials: 'PS',
+    handle: 'priyashah',
+    tint: '#F6DCE8',
+    visibility: 'private',
+    pronouns: 'she/her',
+    city: 'Edmonton, Alberta',
+    bio: 'Botanical ink and the occasional very bad landscape. Mostly here for the walks.',
+    mediums: ['Ink', 'Watercolour'],
+    joined: '2024-06-05',
+    followers: 64,
+    following: 72,
+  },
   'u-alex': { ...CURRENT_USER },
 };
+
+/** Everyone, for the artist directory. */
+export const ALL_PEOPLE = Object.values(PEOPLE);
+
+export const getPerson = (id) => PEOPLE[id];
 
 /** The four avatars shown in every "artists going" stack in the mockups. */
 export const ATTENDEE_SAMPLE = ['u-maya', 'u-jamie', 'u-sam', 'u-priya'];

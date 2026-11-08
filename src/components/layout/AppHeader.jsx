@@ -222,6 +222,9 @@ export default function AppHeader() {
               {user.city}
             </Typography>
           </Box>
+          <MenuItem onClick={() => setAnchor(null)} component={RouterLink} to="/profile">
+            My profile
+          </MenuItem>
           <MenuItem onClick={() => setAnchor(null)} component={RouterLink} to="/my-events">
             My Events
           </MenuItem>

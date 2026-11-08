@@ -16,6 +16,7 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import ArrowUpwardRoundedIcon from '@mui/icons-material/ArrowUpwardRounded';
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import PushPinRoundedIcon from '@mui/icons-material/PushPinRounded';
 import RateReviewOutlinedIcon from '@mui/icons-material/RateReviewOutlined';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
@@ -24,6 +25,7 @@ import SentimentSatisfiedAltRoundedIcon from '@mui/icons-material/SentimentSatis
 import PageBreadcrumbs from '@/components/common/PageBreadcrumbs';
 import SceneImage from '@/components/common/SceneImage';
 import { PersonAvatar } from '@/components/common/PersonAvatar';
+import { profilePath } from '@/components/common/PersonLink';
 import { PEOPLE, PINNED_BY_EVENT, getSpot } from '@/data/mockData';
 import { formatChatDay, formatShortDate, formatTime, isSameDay } from '@/data/format';
 import { useAppState } from '@/state/AppState';
@@ -36,6 +38,7 @@ function Message({ message, event }) {
   const mine = message.authorId === 'u-alex';
   const author = PEOPLE[message.authorId];
   const isHost = message.authorId === event.hostId;
+  const isPrivate = author?.visibility === 'private';
 
   return (
     <Stack
@@ -44,7 +47,14 @@ function Message({ message, event }) {
      
       sx={{ alignItems: "flex-start", mb: 2 }}
     >
-      <PersonAvatar personId={message.authorId} size={32} />
+      <Box
+        component={RouterLink}
+        to={profilePath(message.authorId)}
+        aria-label={`${mine ? 'Your' : `${author?.name}'s`} profile${isPrivate && !mine ? ' (private)' : ''}`}
+        sx={{ display: 'inline-flex', flexShrink: 0, borderRadius: '50%' }}
+      >
+        <PersonAvatar personId={message.authorId} size={32} />
+      </Box>
       <Box sx={{ maxWidth: '72%' }}>
         <Stack
           direction={mine ? 'row-reverse' : 'row'}
@@ -53,7 +63,19 @@ function Message({ message, event }) {
           sx={{ alignItems: "baseline", mb: 0.6 }}
         >
           <Typography variant="subtitle2">
-            {mine ? 'You' : author?.name}
+            <Box
+              component={RouterLink}
+              to={profilePath(message.authorId)}
+              sx={{ color: 'inherit', textDecoration: 'none', '&:hover': { color: 'primary.main' } }}
+            >
+              {mine ? 'You' : author?.name}
+            </Box>
+            {isPrivate && !mine ? (
+              <LockOutlinedIcon
+                sx={{ fontSize: 12, color: 'text.disabled', ml: 0.4, verticalAlign: '-1px' }}
+                titleAccess="Private profile"
+              />
+            ) : null}
             {isHost && !mine ? (
               <Box component="span" sx={{ color: 'text.secondary', fontWeight: 500 }}>
                 {' · Host'}

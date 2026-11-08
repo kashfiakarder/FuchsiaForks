@@ -1,6 +1,15 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { nowLocalIso } from '@/data/format';
-import { CURRENT_USER, EVENTS, SEED_JOINED, SEED_MESSAGES, SEED_REVIEWS, getSpot } from '@/data/mockData';
+import {
+  CURRENT_USER,
+  EVENTS,
+  PEOPLE,
+  SEED_JOINED,
+  SEED_MESSAGES,
+  SEED_REVIEWS,
+  getSpot,
+} from '@/data/mockData';
+import { GALLERY } from '@/data/gallery';
 
 /**
  * Frontend-only application state.
@@ -47,6 +56,12 @@ export function AppStateProvider({ children }) {
     stored?.messagesByEvent ?? SEED_MESSAGES,
   );
   const [customEvents, setCustomEvents] = useState(stored?.customEvents ?? []);
+  // The signed-in user's own profile is editable; everyone else's is fixed
+  // mock data. Keeping only the overrides here means a change to the seed
+  // data still shows up for fields the user has never touched.
+  const [profileEdits, setProfileEdits] = useState(stored?.profileEdits ?? {});
+  const [myGalleryAdds, setMyGalleryAdds] = useState(stored?.myGalleryAdds ?? []);
+  const [removedPostIds, setRemovedPostIds] = useState(stored?.removedPostIds ?? []);
   const [toast, setToast] = useState(null);
 
   useEffect(() => {
@@ -57,8 +72,21 @@ export function AppStateProvider({ children }) {
       reviewsBySpot,
       messagesByEvent,
       customEvents,
+      profileEdits,
+      myGalleryAdds,
+      removedPostIds,
     });
-  }, [signedIn, joinedEventIds, savedSpotIds, reviewsBySpot, messagesByEvent, customEvents]);
+  }, [
+    signedIn,
+    joinedEventIds,
+    savedSpotIds,
+    reviewsBySpot,
+    messagesByEvent,
+    customEvents,
+    profileEdits,
+    myGalleryAdds,
+    removedPostIds,
+  ]);
 
   /**
    * Seed events plus anything created in this browser. Components read
@@ -67,6 +95,81 @@ export function AppStateProvider({ children }) {
    */
   const allEvents = useMemo(() => [...customEvents, ...EVENTS], [customEvents]);
   const findEvent = useCallback((id) => allEvents.find((e) => e.id === id), [allEvents]);
+
+  /* ---------------------------------------------------------------- *
+   *  Profiles and privacy
+   * ---------------------------------------------------------------- */
+
+  /** The signed-in user, with any edits they have made applied on top. */
+  const me = useMemo(() => ({ ...CURRENT_USER, ...profileEdits }), [profileEdits]);
+
+  const getProfile = useCallback(
+    (userId) => (userId === CURRENT_USER.id ? me : PEOPLE[userId]),
+    [me],
+  );
+
+  /**
+   * The single privacy rule in the app.
+   *
+   * A public profile's gallery is visible to anyone. A private one is
+   * visible only to its owner. Every surface that renders gallery content
+   * asks this rather than reading `visibility` itself, so the rule cannot
+   * drift apart between pages.
+   */
+  const canViewGallery = useCallback(
+    (userId) => {
+      if (userId === CURRENT_USER.id) return true;
+      return PEOPLE[userId]?.visibility === 'public';
+    },
+    [],
+  );
+
+  const updateProfile = useCallback((changes) => {
+    setProfileEdits((prev) => ({ ...prev, ...changes }));
+    setToast('Profile updated.');
+  }, []);
+
+  const setVisibility = useCallback((visibility) => {
+    setProfileEdits((prev) => ({ ...prev, visibility }));
+    setToast(
+      visibility === 'private'
+        ? 'Your profile is private. Only you can see your gallery.'
+        : 'Your profile is public. Anyone can see your gallery.',
+    );
+  }, []);
+
+  /** Seed posts plus anything added here, minus anything removed. */
+  const galleryFor = useCallback(
+    (userId) => {
+      const seed = GALLERY[userId] ?? [];
+      const posts = userId === CURRENT_USER.id ? [...myGalleryAdds, ...seed] : seed;
+      return posts.filter((post) => !removedPostIds.includes(post.id));
+    },
+    [myGalleryAdds, removedPostIds],
+  );
+
+  const addGalleryPost = useCallback((draft) => {
+    const post = {
+      id: `g-new-${Date.now()}`,
+      kind: draft.kind,
+      scene: draft.scene,
+      title: draft.title.trim(),
+      medium: draft.kind === 'artwork' ? draft.medium.trim() : undefined,
+      caption: draft.caption.trim(),
+      spotId: draft.spotId || undefined,
+      date: nowLocalIso().slice(0, 10),
+      likes: 0,
+      mine: true,
+    };
+    setMyGalleryAdds((prev) => [post, ...prev]);
+    setToast('Added to your gallery.');
+    return post;
+  }, []);
+
+  const removeGalleryPost = useCallback((postId) => {
+    setRemovedPostIds((prev) => (prev.includes(postId) ? prev : [...prev, postId]));
+    setToast('Removed from your gallery.');
+  }, []);
 
   const isJoined = useCallback(
     (eventId) => joinedEventIds.includes(eventId),
@@ -162,7 +265,14 @@ export function AppStateProvider({ children }) {
 
   const value = useMemo(
     () => ({
-      user: CURRENT_USER,
+      user: me,
+      getProfile,
+      canViewGallery,
+      updateProfile,
+      setVisibility,
+      galleryFor,
+      addGalleryPost,
+      removeGalleryPost,
       allEvents,
       findEvent,
       createEvent,
@@ -184,6 +294,14 @@ export function AppStateProvider({ children }) {
       clearToast: () => setToast(null),
     }),
     [
+      me,
+      getProfile,
+      canViewGallery,
+      updateProfile,
+      setVisibility,
+      galleryFor,
+      addGalleryPost,
+      removeGalleryPost,
       allEvents,
       findEvent,
       createEvent,
