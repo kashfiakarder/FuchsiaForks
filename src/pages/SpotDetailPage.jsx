@@ -26,7 +26,6 @@ import PersonLink from '@/components/common/PersonLink';
 import ReviewDialog from '@/components/reviews/ReviewDialog';
 import ShareMenu from '@/components/common/ShareMenu';
 import NotFoundPage from './NotFoundPage';
-import { PEOPLE, eventsAtSpot, getSpot } from '@/data/mockData';
 import { formatDayNumber, formatMonthAbbr, formatReviewDate, formatShortDate, formatTimeRange } from '@/data/format';
 import { useAppState } from '@/state/AppState';
 import { RADIUS, cardSx } from '@/theme';
@@ -35,8 +34,8 @@ const FEATURE_ICONS = [DirectionsWalkRoundedIcon, WbSunnyOutlinedIcon, LocalPark
 
 export default function SpotDetailPage() {
   const { spotId } = useParams();
+  const { reviewsBySpot, isSaved, toggleSaveSpot, getSpot, eventsAtSpot, user, getProfile } = useAppState();
   const spot = getSpot(spotId);
-  const { reviewsBySpot, isSaved, toggleSaveSpot } = useAppState();
   const [dialogOpen, setDialogOpen] = useState(false);
 
   if (!spot) return <NotFoundPage />;
@@ -190,7 +189,7 @@ export default function SpotDetailPage() {
                       </Stack>
                       <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 0.3 }}>
                         {event.attendees} artists going · Hosted by{' '}
-                        {event.hostId === 'u-alex' ? 'you' : PEOPLE[event.hostId].name}
+                        {event.hostId === user?.id ? 'you' : getProfile(event.hostId)?.name}
                       </Typography>
                     </Box>
 

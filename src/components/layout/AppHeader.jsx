@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link as RouterLink, NavLink, useNavigate } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 import AppBar from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
 import Badge from '@mui/material/Badge';
@@ -40,6 +41,7 @@ const NOTIFICATIONS = [
 
 export default function AppHeader() {
   const { user, signOut } = useAppState();
+  const { logout } = useAuth0();
   const navigate = useNavigate();
   const [anchor, setAnchor] = useState(null);
   const [bellAnchor, setBellAnchor] = useState(null);
@@ -66,7 +68,7 @@ export default function AppHeader() {
   const handleSignOut = () => {
     setAnchor(null);
     signOut();
-    navigate('/login');
+    logout({ logoutParams: { returnTo: window.location.origin } });
   };
 
   return (

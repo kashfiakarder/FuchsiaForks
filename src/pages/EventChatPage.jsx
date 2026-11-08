@@ -26,17 +26,15 @@ import PageBreadcrumbs from '@/components/common/PageBreadcrumbs';
 import SceneImage from '@/components/common/SceneImage';
 import { PersonAvatar } from '@/components/common/PersonAvatar';
 import { profilePath } from '@/components/common/PersonLink';
-import { PEOPLE, PINNED_BY_EVENT, getSpot } from '@/data/mockData';
 import { formatChatDay, formatShortDate, formatTime, isSameDay } from '@/data/format';
 import { useAppState } from '@/state/AppState';
 import { BRAND, RADIUS, cardSx, tintSx } from '@/theme';
 
-const UNREAD = { 'reservoir-light-layers': 2 };
-
 /** One bubble. Own messages sit right, in magenta; everyone else left, in grey. */
 function Message({ message, event }) {
-  const mine = message.authorId === 'u-alex';
-  const author = PEOPLE[message.authorId];
+  const { user, getProfile } = useAppState();
+  const mine = message.authorId === user?.id;
+  const author = getProfile(message.authorId);
   const isHost = message.authorId === event.hostId;
   const isPrivate = author?.visibility === 'private';
 
@@ -49,7 +47,7 @@ function Message({ message, event }) {
     >
       <Box
         component={RouterLink}
-        to={profilePath(message.authorId)}
+        to={profilePath(message.authorId, user?.id)}
         aria-label={`${mine ? 'Your' : `${author?.name}'s`} profile${isPrivate && !mine ? ' (private)' : ''}`}
         sx={{ display: 'inline-flex', flexShrink: 0, borderRadius: '50%' }}
       >
@@ -65,7 +63,7 @@ function Message({ message, event }) {
           <Typography variant="subtitle2">
             <Box
               component={RouterLink}
-              to={profilePath(message.authorId)}
+              to={profilePath(message.authorId, user?.id)}
               sx={{ color: 'inherit', textDecoration: 'none', '&:hover': { color: 'primary.main' } }}
             >
               {mine ? 'You' : author?.name}
@@ -116,7 +114,8 @@ function Message({ message, event }) {
 export default function EventChatPage() {
   const { eventId } = useParams();
   const navigate = useNavigate();
-  const { joinedEventIds, messagesByEvent, sendMessage, allEvents, findEvent } = useAppState();
+  const { joinedEventIds, messagesByEvent, sendMessage, allEvents, findEvent, getSpot, getProfile, user } =
+    useAppState();
 
   const conversations = useMemo(
     () => allEvents.filter((e) => joinedEventIds.includes(e.id)).sort((a, b) => a.start.localeCompare(b.start)),
@@ -146,8 +145,6 @@ export default function EventChatPage() {
       </Paper>
     );
   }
-
-  const spot = getSpot(event.spotId);
 
   const submit = (e) => {
     e.preventDefault();
@@ -216,9 +213,9 @@ export default function EventChatPage() {
                 const convSpot = getSpot(conv.spotId);
                 const last = (messagesByEvent[conv.id] ?? []).at(-1);
                 const lastAuthor = last
-                  ? last.authorId === 'u-alex'
+                  ? last.authorId === user?.id
                     ? 'You'
-                    : PEOPLE[last.authorId]?.name.split(' ')[0]
+                    : getProfile(last.authorId)?.name.split(' ')[0]
                   : null;
                 const active = conv.id === activeId;
 
@@ -253,7 +250,7 @@ export default function EventChatPage() {
                         {conv.title}
                       </Typography>
                       <Typography variant="caption" color="text.secondary" noWrap sx={{ display: 'block' }}>
-                        {convSpot.name}
+                        {convSpot?.name}
                       </Typography>
                       {last ? (
                         <Typography variant="caption" color="text.secondary" noWrap sx={{ display: 'block', mt: 0.5 }}>
@@ -264,25 +261,6 @@ export default function EventChatPage() {
                         <Typography variant="caption" sx={{ fontWeight: 700, color: active ? 'primary.main' : 'text.secondary' }}>
                           {formatShortDate(conv.start).toUpperCase()} · {formatTime(conv.start)}
                         </Typography>
-                        {UNREAD[conv.id] ? (
-                          <Box
-                            sx={{
-                              minWidth: 20,
-                              height: 20,
-                              px: 0.6,
-                              borderRadius: 10,
-                              bgcolor: 'primary.main',
-                              color: 'primary.contrastText',
-                              fontSize: '0.7rem',
-                              fontWeight: 700,
-                              display: 'grid',
-                              placeItems: 'center',
-                            }}
-                            aria-label={`${UNREAD[conv.id]} unread messages`}
-                          >
-                            {UNREAD[conv.id]}
-                          </Box>
-                        ) : null}
                       </Stack>
                     </Box>
                   </Box>
@@ -342,7 +320,7 @@ export default function EventChatPage() {
             </Menu>
           </Stack>
 
-          {PINNED_BY_EVENT[event.id] ? (
+          {event.pinned ? (
             <Stack
               direction="row"
               spacing={1.25}
@@ -351,7 +329,7 @@ export default function EventChatPage() {
             >
               <PushPinRoundedIcon sx={{ fontSize: 17, color: 'primary.main' }} />
               <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                {PINNED_BY_EVENT[event.id]}
+                {event.pinned}
               </Typography>
             </Stack>
           ) : null}

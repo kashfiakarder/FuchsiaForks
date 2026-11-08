@@ -9,6 +9,7 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import AltRouteRoundedIcon from '@mui/icons-material/AltRouteRounded';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import NorthEastRoundedIcon from '@mui/icons-material/NorthEastRounded';
 import SwapVertRoundedIcon from '@mui/icons-material/SwapVertRounded';
@@ -16,7 +17,6 @@ import SwapVertRoundedIcon from '@mui/icons-material/SwapVertRounded';
 import EventCard from '@/components/events/EventCard';
 import CreateEventDialog from '@/components/events/CreateEventDialog';
 import SceneImage from '@/components/common/SceneImage';
-import { PAST_EVENTS, PEOPLE, getSpot } from '@/data/mockData';
 import { formatShortDate, formatTimeRange } from '@/data/format';
 import { useAppState } from '@/state/AppState';
 import { BRAND, RADIUS, cardSx, tintSx } from '@/theme';
@@ -29,17 +29,25 @@ import { BRAND, RADIUS, cardSx, tintSx } from '@/theme';
  * read-only.
  */
 export default function MyEventsPage() {
-  const { user, joinedEventIds, isHosting, allEvents } = useAppState();
+  const { user, joinedEventIds, isHosting, allEvents, pastEvents, getSpot, getProfile } = useAppState();
   const [tab, setTab] = useState('upcoming');
   const [createOpen, setCreateOpen] = useState(false);
   const [soonestFirst, setSoonestFirst] = useState(true);
 
   const upcoming = useMemo(() => {
-    const list = allEvents.filter((e) => joinedEventIds.includes(e.id));
+    const list = allEvents.filter((e) => joinedEventIds.includes(e.id) || e.hostId === user?.id);
     return list.sort((a, b) =>
       soonestFirst ? a.start.localeCompare(b.start) : b.start.localeCompare(a.start),
     );
-  }, [allEvents, joinedEventIds, soonestFirst]);
+  }, [allEvents, joinedEventIds, soonestFirst, user]);
+
+  const past = useMemo(
+    () =>
+      pastEvents
+        .filter((event) => joinedEventIds.includes(event.id) || event.hostId === user?.id)
+        .sort((a, b) => b.start.localeCompare(a.start)),
+    [pastEvents, joinedEventIds, user],
+  );
 
   return (
     <>
@@ -64,14 +72,25 @@ export default function MyEventsPage() {
           </Typography>
         </Box>
 
-        <Button
-          variant="contained"
-          size="large"
-          startIcon={<AddRoundedIcon />}
-          onClick={() => setCreateOpen(true)}
-        >
-          Create an event
-        </Button>
+        <Stack direction="row" spacing={1.25} sx={{ flexWrap: 'wrap' }}>
+          <Button
+            component={RouterLink}
+            to="/routes"
+            variant="outlined"
+            size="large"
+            startIcon={<AltRouteRoundedIcon />}
+          >
+            Routes
+          </Button>
+          <Button
+            variant="contained"
+            size="large"
+            startIcon={<AddRoundedIcon />}
+            onClick={() => setCreateOpen(true)}
+          >
+            Create an event
+          </Button>
+        </Stack>
       </Box>
 
       <Box
@@ -107,7 +126,7 @@ export default function MyEventsPage() {
               <Box component="span" sx={{ display: 'inline-flex', gap: 0.85, alignItems: 'baseline' }}>
                 Past
                 <Box component="span" sx={{ fontSize: '0.78rem', color: 'text.secondary' }}>
-                  {PAST_EVENTS.length}
+                  {past.length}
                 </Box>
               </Box>
             }
@@ -160,10 +179,11 @@ export default function MyEventsPage() {
           </Paper>
         )
       ) : (
+        past.length ? (
         <Paper sx={{ ...cardSx, mt: 3, overflow: 'hidden' }}>
-          {PAST_EVENTS.map((event, i) => {
+          {past.map((event, i) => {
             const spot = getSpot(event.spotId);
-            const host = PEOPLE[event.hostId];
+            const host = getProfile(event.hostId);
             return (
               <Box key={event.id}>
                 {i > 0 ? <Divider /> : null}
@@ -178,7 +198,7 @@ export default function MyEventsPage() {
                       {event.title}
                     </Typography>
                     <Typography variant="caption" color="text.secondary">
-                      {spot.name} · {formatShortDate(event.start)} ·{' '}
+                      {spot?.name} · {formatShortDate(event.start)} ·{' '}
                       {formatTimeRange(event.start, event.end)}
                     </Typography>
                   </Box>
@@ -187,13 +207,21 @@ export default function MyEventsPage() {
                     color="text.secondary"
                     sx={{ display: { xs: 'none', sm: 'block' }, whiteSpace: 'nowrap' }}
                   >
-                    {event.attendees} artists · {host.id === 'u-alex' ? 'You hosted' : host.name}
+                    {event.attendees} artists · {host?.id === user?.id ? 'You hosted' : host?.name}
                   </Typography>
                 </Box>
               </Box>
             );
           })}
         </Paper>
+        ) : (
+          <Paper sx={{ ...cardSx, mt: 3, p: 5, textAlign: 'center' }}>
+            <Typography variant="h3">No past paint-outs yet</Typography>
+            <Typography color="text.secondary" sx={{ mt: 1 }}>
+              Events you have already been to will settle here.
+            </Typography>
+          </Paper>
+        )
       )}
 
       <Paper

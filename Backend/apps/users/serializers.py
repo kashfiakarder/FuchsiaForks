@@ -33,10 +33,21 @@ class ProfileSerializer(serializers.ModelSerializer):
             "pfp",
             "interests",
             "city",
+            "display_name",
+            "handle",
+            "pronouns",
+            "bio",
+            "mediums",
+            "visibility",
+            "tint",
+            "followers_count",
+            "following_count",
+            "joined_on",
             "upcoming_events",
             "past_events",
             "art_gallery",
         ]
+        read_only_fields = ["auth0_id"]
 
     def create(self, validated_data):
         request = self.context.get("request")

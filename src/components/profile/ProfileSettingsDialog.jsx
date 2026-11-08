@@ -78,7 +78,7 @@ function VisibilityOption({ option, selected, onSelect }) {
  * Save, so backing out of the dialog changes nothing.
  */
 export default function ProfileSettingsDialog({ open, onClose }) {
-  const { user, updateProfile, setVisibility } = useAppState();
+  const { user, updateProfile } = useAppState();
   const [draft, setDraft] = useState(user);
 
   // Re-read on open so a cancelled edit never persists into the next one.
@@ -88,20 +88,24 @@ export default function ProfileSettingsDialog({ open, onClose }) {
 
   const set = (name) => (event) => setDraft((prev) => ({ ...prev, [name]: event.target.value }));
 
-  const save = () => {
+  const save = async () => {
     const { visibility, ...rest } = draft;
-    updateProfile({
-      name: rest.name.trim() || user.name,
-      pronouns: rest.pronouns.trim(),
-      city: rest.city.trim(),
-      bio: rest.bio.trim(),
-      mediums: String(rest.mediums)
-        .split(',')
-        .map((m) => m.trim())
-        .filter(Boolean),
-    });
-    if (visibility !== user.visibility) setVisibility(visibility);
-    onClose();
+    try {
+      await updateProfile({
+        name: rest.name.trim() || user.name,
+        pronouns: (rest.pronouns || '').trim(),
+        city: (rest.city || '').trim(),
+        bio: (rest.bio || '').trim(),
+        mediums: String(rest.mediums ?? '')
+          .split(',')
+          .map((m) => m.trim())
+          .filter(Boolean),
+        visibility,
+      });
+      onClose();
+    } catch {
+      /* AppState surfaces the failure. */
+    }
   };
 
   return (

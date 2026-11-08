@@ -28,6 +28,23 @@ class Event(models.Model):
     title = models.CharField(max_length=150)
     description = models.TextField(blank=True)
     start_time = models.DateTimeField()
+    slug = models.SlugField(max_length=80, unique=True, null=True, blank=True)
+    start_local = models.CharField(max_length=40, blank=True)
+    end_local = models.CharField(max_length=40, blank=True)
+    badge = models.CharField(max_length=80, blank=True)
+    meeting_point = models.CharField(max_length=255, blank=True)
+    skill_note = models.CharField(max_length=120, blank=True)
+    scene = models.CharField(max_length=20, blank=True)
+    headline = models.CharField(max_length=200, blank=True)
+    kit_title = models.CharField(max_length=120, blank=True)
+    kit_body = models.TextField(blank=True)
+    weather_title = models.CharField(max_length=120, blank=True)
+    weather_body = models.TextField(blank=True)
+    gallery_scenes = models.JSONField(default=list, blank=True)
+    timezone_label = models.CharField(max_length=80, blank=True, default="Mountain Standard Time")
+    listed_attendees = models.PositiveIntegerField(default=0)
+    pinned_message = models.CharField(max_length=255, blank=True)
+    is_past = models.BooleanField(default=False)
     invitees = models.ManyToManyField(
         User,
         through="Invitation",
@@ -142,3 +159,52 @@ class EventPhoto(models.Model):
     def save(self, *args, **kwargs):
         self.full_clean()
         return super().save(*args, **kwargs)
+
+
+class EventMessage(models.Model):
+    """A message in an event chat. `sent_local` is the wall-clock string the UI prints."""
+
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="messages")
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="event_messages")
+    body = models.TextField()
+    sent_local = models.CharField(max_length=40, blank=True)
+    sent_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["sent_at"]
+
+
+class GalleryPost(models.Model):
+    """A profile gallery entry.
+
+    Seeded posts keep a scene illustration. Posts people add store the
+    uploaded file in `image` and leave the scene as a fallback only.
+    """
+
+    class Kind(models.TextChoices):
+        ARTWORK = "artwork", "Artwork"
+        MOMENT = "moment", "Moment"
+
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="gallery_posts")
+    kind = models.CharField(max_length=10, choices=Kind.choices, default=Kind.ARTWORK)
+    scene = models.CharField(max_length=20)
+    image = models.ImageField(upload_to="gallery/", blank=True)
+    title = models.CharField(max_length=150)
+    medium = models.CharField(max_length=80, blank=True)
+    caption = models.TextField(blank=True)
+    spot = models.ForeignKey(
+        "spots.Spot",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="gallery_posts",
+    )
+    event = models.ForeignKey(
+        Event, null=True, blank=True, on_delete=models.SET_NULL, related_name="gallery_posts"
+    )
+    likes = models.PositiveIntegerField(default=0)
+    posted_on = models.DateField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-posted_on", "-created_at"]

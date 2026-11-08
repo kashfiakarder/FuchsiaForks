@@ -31,6 +31,7 @@ import { defaults as defaultControls } from 'ol/control';
 import 'ol/ol.css';
 
 import SceneImage from '@/components/common/SceneImage';
+import { createUserLocationLayer, setUserLocationFeature, useUserLocation } from '@/components/map/userLocation';
 import { ALBERTA_OUTLINE } from '@/data/alberta';
 import { BRAND, RADIUS, cardSx } from '@/theme';
 
@@ -108,7 +109,12 @@ export default function AlbertaMap({ spots, activeSpotId, onHoverSpot, onSelectS
   const spotSourceRef = useRef(null);
   const osmLayerRef = useRef(null);
   const lightLayerRef = useRef(null);
+  const userSourceRef = useRef(null);
   const [basemap, setBasemap] = useState('light');
+  const { location, status, request } = useUserLocation();
+  const locationRef = useRef(location);
+  locationRef.current = location;
+  const focusMeRef = useRef(false);
 
   // Keep callbacks in refs: OpenLayers listeners are bound once, and
   // re-binding them on every render would thrash the map.
@@ -144,6 +150,7 @@ export default function AlbertaMap({ spots, activeSpotId, onHoverSpot, onSelectS
       source: spotSource,
       style: (feature) => (feature.get('active') ? SPOT_STYLE_ACTIVE : SPOT_STYLE),
     });
+    const { source: userSource, layer: userLayer } = createUserLocationLayer();
 
     /**
      * Both basemaps are OpenStreetMap-derived, free and need no API key.
@@ -171,7 +178,7 @@ export default function AlbertaMap({ spots, activeSpotId, onHoverSpot, onSelectS
 
     const map = new OlMap({
       target: containerRef.current,
-      layers: [light, osm, mask, province, spotLayer],
+      layers: [light, osm, mask, province, spotLayer, userLayer],
       view: new View({ center: fromLonLat([-114.6, 54.6]), zoom: 5, minZoom: 4, maxZoom: 14 }),
       // The rotate control is noise on a map nobody rotates.
       controls: defaultControls({ rotate: false, attributionOptions: { collapsible: false } }),
@@ -200,15 +207,30 @@ export default function AlbertaMap({ spots, activeSpotId, onHoverSpot, onSelectS
 
     mapRef.current = map;
     spotSourceRef.current = spotSource;
+    userSourceRef.current = userSource;
     osmLayerRef.current = osm;
     lightLayerRef.current = light;
+    setUserLocationFeature(userSource, locationRef.current);
 
     return () => {
       map.setTarget(undefined);
       map.dispose();
       mapRef.current = null;
+      userSourceRef.current = null;
     };
   }, []);
+
+  useEffect(() => {
+    setUserLocationFeature(userSourceRef.current, location);
+    if (!location || !focusMeRef.current || !mapRef.current) return;
+    focusMeRef.current = false;
+    const view = mapRef.current.getView();
+    view.animate({
+      center: fromLonLat(location.lonLat),
+      zoom: Math.max(view.getZoom() ?? 5, 12),
+      duration: 520,
+    });
+  }, [location]);
 
   /* ---- Keep the pins in sync with the filtered list ---- */
   useEffect(() => {
@@ -241,6 +263,20 @@ export default function AlbertaMap({ spots, activeSpotId, onHoverSpot, onSelectS
     if (osmLayerRef.current) osmLayerRef.current.setVisible(basemap === 'street');
     if (lightLayerRef.current) lightLayerRef.current.setVisible(basemap === 'light');
   }, [basemap]);
+
+  const showMe = useCallback(() => {
+    focusMeRef.current = true;
+    request();
+    const current = locationRef.current;
+    if (!current || !mapRef.current) return;
+    focusMeRef.current = false;
+    const view = mapRef.current.getView();
+    view.animate({
+      center: fromLonLat(current.lonLat),
+      zoom: Math.max(view.getZoom() ?? 5, 12),
+      duration: 520,
+    });
+  }, [request]);
 
   const resetView = useCallback(() => {
     if (!mapRef.current || !provinceExtentRef.current) return;
@@ -352,6 +388,11 @@ export default function AlbertaMap({ spots, activeSpotId, onHoverSpot, onSelectS
           <Typography variant="subtitle2" sx={{ whiteSpace: 'nowrap' }}>
             {spots.length} {spots.length === 1 ? 'spot' : 'spots'}
           </Typography>
+          {location ? (
+            <Typography variant="caption" sx={{ color: '#2563EB', display: 'block', fontWeight: 700 }}>
+              Blue dot is you
+            </Typography>
+          ) : null}
         </Paper>
 
         <Stack direction="row" sx={{ gap: 1, pointerEvents: 'auto' }}>
@@ -377,6 +418,31 @@ export default function AlbertaMap({ spots, activeSpotId, onHoverSpot, onSelectS
             <ToggleButton value="light">Map</ToggleButton>
             <ToggleButton value="street">Terrain</ToggleButton>
           </ToggleButtonGroup>
+
+          <Tooltip
+            title={
+              status === 'denied'
+                ? 'Location is blocked in the browser'
+                : status === 'unavailable'
+                  ? 'Location is not available'
+                  : 'Show my location'
+            }
+          >
+            <IconButton
+              onClick={showMe}
+              size="small"
+              aria-label="Show my location"
+              sx={{
+                bgcolor: 'background.paper',
+                color: '#2563EB',
+                border: `1px solid ${BRAND.line}`,
+                borderRadius: `${RADIUS.sm}px`,
+                '&:hover': { bgcolor: '#FAFAFC' },
+              }}
+            >
+              <MyLocationRoundedIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
 
           <Tooltip title="Reset to all of Alberta">
             <IconButton

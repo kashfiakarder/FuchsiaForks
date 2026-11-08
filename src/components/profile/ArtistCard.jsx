@@ -4,7 +4,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { Link as RouterLink } from 'react-router-dom';
 
-import SceneImage from '@/components/common/SceneImage';
+import GalleryImage from '@/components/profile/GalleryImage';
 import { PersonAvatar } from '@/components/common/PersonAvatar';
 import { profilePath } from '@/components/common/PersonLink';
 import PrivacyBadge from './PrivacyBadge';
@@ -19,7 +19,7 @@ import { BRAND, RADIUS, cardSx } from '@/theme';
  * state, so the difference is obvious before anyone clicks.
  */
 export default function ArtistCard({ person }) {
-  const { canViewGallery, galleryFor } = useAppState();
+  const { canViewGallery, galleryFor, user } = useAppState();
   const visible = canViewGallery(person.id);
   const posts = galleryFor(person.id);
   const preview = visible ? posts.slice(0, 3) : [];
@@ -27,7 +27,7 @@ export default function ArtistCard({ person }) {
   return (
     <Paper
       component={RouterLink}
-      to={profilePath(person.id)}
+      to={profilePath(person.id, user?.id)}
       sx={{
         ...cardSx,
         display: 'block',
@@ -73,9 +73,9 @@ export default function ArtistCard({ person }) {
         {visible && preview.length ? (
           <Stack direction="row" spacing={1}>
             {preview.map((post) => (
-              <SceneImage
+              <GalleryImage
                 key={post.id}
-                variant={post.scene}
+                post={post}
                 sx={{ flex: 1, height: 58 }}
                 radius={RADIUS.sm}
               />

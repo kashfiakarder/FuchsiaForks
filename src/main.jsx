@@ -9,6 +9,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import '@fontsource-variable/inter';
 
 import App from './App';
+import Auth0ProviderWithNavigate from './auth/Auth0ProviderWithNavigate';
 import theme from './theme';
 import { AppStateProvider } from './state/AppState';
 import ScrollToTop from './components/layout/ScrollToTop';
@@ -21,10 +22,12 @@ createRoot(container).render(
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <BrowserRouter>
-        <AppStateProvider>
-          <ScrollToTop />
-          <App />
-        </AppStateProvider>
+        <Auth0ProviderWithNavigate>
+          <AppStateProvider>
+            <ScrollToTop />
+            <App />
+          </AppStateProvider>
+        </Auth0ProviderWithNavigate>
       </BrowserRouter>
     </ThemeProvider>
   </StrictMode>,

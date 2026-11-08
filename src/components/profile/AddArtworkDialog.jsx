@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -13,66 +13,79 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Typography from '@mui/material/Typography';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 
-import SceneImage from '@/components/common/SceneImage';
-import { SPOTS } from '@/data/mockData';
 import { useAppState } from '@/state/AppState';
 import { BRAND, RADIUS } from '@/theme';
 
-/**
- * Scene choices stand in for an upload.
- *
- * There is no file storage behind this, so rather than fake an uploader
- * that quietly loses your image on refresh, you pick from the same
- * illustration set the rest of the app draws with. Swapping this for a
- * real upload is a change to this one dialog.
- */
-const SCENES = [
-  { value: 'creek', label: 'Creek' },
-  { value: 'rockies', label: 'Mountains' },
-  { value: 'reservoir', label: 'Lake' },
-  { value: 'skyline', label: 'Skyline' },
-  { value: 'badlands', label: 'Badlands' },
-  { value: 'woods', label: 'Woodland' },
-  { value: 'prairie', label: 'Prairie' },
-  { value: 'meadow', label: 'Meadow' },
-  { value: 'paintout', label: 'Group session' },
-  { value: 'palette', label: 'Palette / kit' },
-];
+const ACCEPT = 'image/jpeg,image/png,image/gif,image/webp';
+const MAX_BYTES = 8 * 1024 * 1024;
 
 const EMPTY = {
   kind: 'artwork',
-  scene: 'creek',
   title: '',
   medium: '',
   caption: '',
   spotId: '',
+  file: null,
 };
 
 export default function AddArtworkDialog({ open, onClose }) {
-  const { addGalleryPost } = useAppState();
+  const { addGalleryPost, spots } = useAppState();
   const [values, setValues] = useState(EMPTY);
-  const [error, setError] = useState('');
+  const [titleError, setTitleError] = useState('');
+  const [imageError, setImageError] = useState('');
+  const [previewUrl, setPreviewUrl] = useState('');
+
+  useEffect(() => {
+    if (!values.file) {
+      setPreviewUrl('');
+      return undefined;
+    }
+    const url = URL.createObjectURL(values.file);
+    setPreviewUrl(url);
+    return () => URL.revokeObjectURL(url);
+  }, [values.file]);
 
   const set = (name) => (event) => {
     setValues((prev) => ({ ...prev, [name]: event.target.value }));
-    if (name === 'title') setError('');
+    if (name === 'title') setTitleError('');
   };
 
-  const submit = () => {
-    if (!values.title.trim()) {
-      setError('Give it a title.');
+  const onFile = (event) => {
+    const file = event.target.files?.[0] ?? null;
+    if (!file) {
+      setValues((prev) => ({ ...prev, file: null }));
       return;
     }
-    addGalleryPost(values);
+    if (file.size > MAX_BYTES) {
+      setImageError('That image is larger than 8 MB.');
+      event.target.value = '';
+      return;
+    }
+    setImageError('');
+    setValues((prev) => ({ ...prev, file }));
+  };
+
+  const submit = async () => {
+    const missingTitle = !values.title.trim();
+    const missingImage = !values.file;
+    setTitleError(missingTitle ? 'Give it a title.' : '');
+    setImageError(missingImage ? 'Choose an image.' : '');
+    if (missingTitle || missingImage) return;
+
+    const created = await addGalleryPost(values);
+    if (!created) return;
     setValues(EMPTY);
-    setError('');
+    setTitleError('');
+    setImageError('');
     onClose();
   };
 
   const close = () => {
     setValues(EMPTY);
-    setError('');
+    setTitleError('');
+    setImageError('');
     onClose();
   };
 
@@ -113,8 +126,8 @@ export default function AddArtworkDialog({ open, onClose }) {
             label="Title"
             value={values.title}
             onChange={set('title')}
-            error={Boolean(error)}
-            helperText={error || ' '}
+            error={Boolean(titleError)}
+            helperText={titleError || ' '}
             placeholder={values.kind === 'artwork' ? 'Fish Creek, first frost' : 'The Thursday crowd'}
             fullWidth
             autoFocus
@@ -127,21 +140,47 @@ export default function AddArtworkDialog({ open, onClose }) {
             <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
               <Box
                 sx={{
-                  p: values.kind === 'artwork' ? 1 : 0,
-                  bgcolor: values.kind === 'artwork' ? '#EFEAE0' : 'transparent',
-                  borderRadius: `${RADIUS.sm}px`,
+                  position: 'relative',
+                  width: 108,
+                  height: 80,
                   flexShrink: 0,
+                  overflow: 'hidden',
+                  display: 'grid',
+                  placeItems: 'center',
+                  bgcolor: values.kind === 'artwork' ? '#EFEAE0' : '#101013',
+                  borderRadius: `${RADIUS.sm}px`,
+                  border: previewUrl ? 'none' : `1px dashed ${BRAND.line}`,
                 }}
               >
-                <SceneImage variant={values.scene} sx={{ width: 108, height: 80 }} radius={2} />
+                {previewUrl ? (
+                  <Box
+                    component="img"
+                    src={previewUrl}
+                    alt=""
+                    sx={{
+                      position: 'absolute',
+                      inset: values.kind === 'artwork' ? 6 : 0,
+                      objectFit: 'cover',
+                      borderRadius: values.kind === 'artwork' ? 1 : 0,
+                    }}
+                  />
+                ) : (
+                  <ImageOutlinedIcon sx={{ color: 'text.disabled' }} />
+                )}
               </Box>
-              <TextField select label="Scene" value={values.scene} onChange={set('scene')} fullWidth>
-                {SCENES.map((s) => (
-                  <MenuItem key={s.value} value={s.value}>
-                    {s.label}
-                  </MenuItem>
-                ))}
-              </TextField>
+              <Box>
+                <Button variant="outlined" component="label">
+                  Choose image
+                  <input hidden type="file" accept={ACCEPT} onChange={onFile} />
+                </Button>
+                <Typography
+                  variant="caption"
+                  color={imageError ? 'error' : 'text.secondary'}
+                  sx={{ display: 'block', mt: 0.75 }}
+                >
+                  {imageError || 'JPEG, PNG, GIF, or WebP. Up to 8 MB.'}
+                </Typography>
+              </Box>
             </Stack>
           </Box>
 
@@ -159,7 +198,7 @@ export default function AddArtworkDialog({ open, onClose }) {
             <MenuItem value="">
               <em>Not at a listed spot</em>
             </MenuItem>
-            {SPOTS.map((s) => (
+            {spots.map((s) => (
               <MenuItem key={s.id} value={s.id}>
                 {s.name} — {s.region}
               </MenuItem>

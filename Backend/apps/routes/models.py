@@ -42,6 +42,35 @@ class Route(models.Model):
         )
 
 
+class RouteInvite(models.Model):
+    """An invitation to walk a route with the person who planned it."""
+
+    class Status(models.TextChoices):
+        PENDING = "pending", "Pending"
+        ACCEPTED = "accepted", "Accepted"
+        DECLINED = "declined", "Declined"
+
+    route = models.ForeignKey(Route, on_delete=models.CASCADE, related_name="invites")
+    invitee = models.ForeignKey(User, on_delete=models.CASCADE, related_name="route_invites")
+    invited_by = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="sent_route_invites"
+    )
+    status = models.CharField(max_length=10, choices=Status.choices, default=Status.PENDING)
+    invited_at = models.DateTimeField(auto_now_add=True)
+    responded_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        ordering = ["invited_at"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["route", "invitee"], name="one_invite_per_user_per_route"
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.invitee} -> {self.route} [{self.status}]"
+
+
 class RouteStop(models.Model):
     """One step in a route. `order` is 1, 2, 3... along the route."""
 

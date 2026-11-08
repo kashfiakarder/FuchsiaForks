@@ -24,7 +24,6 @@ import SceneImage from '@/components/common/SceneImage';
 import { AttendeeStack } from '@/components/common/PersonAvatar';
 import PersonLink from '@/components/common/PersonLink';
 import NotFoundPage from './NotFoundPage';
-import { getSpot } from '@/data/mockData';
 import { formatLongDate, formatTimeRange, formatWeekdayDate } from '@/data/format';
 import { useAppState } from '@/state/AppState';
 import { RADIUS, cardSx, tintSx } from '@/theme';
@@ -32,13 +31,14 @@ import { RADIUS, cardSx, tintSx } from '@/theme';
 /** Event detail: the full pitch on the left, the commitment on the right. */
 export default function EventDetailPage() {
   const { eventId } = useParams();
-  const { isJoined, isHosting, toggleJoin, findEvent } = useAppState();
+  const { isJoined, isHosting, toggleJoin, findEvent, getSpot } = useAppState();
   const [photoIndex, setPhotoIndex] = useState(null);
   const event = findEvent(eventId);
 
   if (!event) return <NotFoundPage />;
 
   const spot = getSpot(event.spotId);
+  if (!spot) return <NotFoundPage />;
   const hosting = isHosting(event.id);
   const joined = isJoined(event.id);
 
@@ -238,7 +238,10 @@ export default function EventDetailPage() {
               size="large"
               fullWidth
               startIcon={joined ? <CheckRoundedIcon /> : <AddRoundedIcon />}
-              onClick={() => toggleJoin(event.id)}
+              onClick={() => {
+                if (!hosting) toggleJoin(event.id);
+              }}
+              disabled={hosting}
               sx={{ mt: 2.5 }}
             >
               {hosting ? 'You’re hosting' : joined ? 'You’re going' : 'Join event'}

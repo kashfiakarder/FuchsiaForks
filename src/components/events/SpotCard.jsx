@@ -8,7 +8,7 @@ import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import { Link as RouterLink } from 'react-router-dom';
 
 import SceneImage from '@/components/common/SceneImage';
-import { eventsAtSpot } from '@/data/mockData';
+import { useAppState } from '@/state/AppState';
 import { BRAND, cardSx } from '@/theme';
 
 /**
@@ -18,6 +18,7 @@ import { BRAND, cardSx } from '@/theme';
  * either one lights up the other.
  */
 export default function SpotCard({ spot, active = false }) {
+  const { eventsAtSpot } = useAppState();
   const upcoming = eventsAtSpot(spot.id).length;
 
   return (

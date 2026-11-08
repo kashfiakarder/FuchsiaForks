@@ -14,7 +14,6 @@ import { Link as RouterLink, useSearchParams } from 'react-router-dom';
 import EventCard from '@/components/events/EventCard';
 import SpotCard from '@/components/events/SpotCard';
 import ArtistCard from '@/components/profile/ArtistCard';
-import { ALL_PEOPLE, CURRENT_USER, SPOTS, getSpot } from '@/data/mockData';
 
 /**
  * OpenLayers is a third of a megabyte. Loading it lazily means the rest of
@@ -49,7 +48,7 @@ const GRID_PAGE = 12;
  * rhythm as the screens that were specified.
  */
 export default function DiscoverPage() {
-  const { user, isJoined, isHosting, allEvents } = useAppState();
+  const { user, isJoined, isHosting, allEvents, spots: allSpots, people } = useAppState();
   // Seeded from the header's search box, which navigates here with ?q=.
   const [searchParams, setSearchParams] = useSearchParams();
   const [query, setQuery] = useState(() => searchParams.get('q') ?? '');
@@ -61,7 +60,7 @@ export default function DiscoverPage() {
 
   const spots = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return SPOTS.filter((spot) => {
+    return allSpots.filter((spot) => {
       const byRegion = filter === 'All of Alberta' || spot.region === filter;
       const byQuery =
         !q ||
@@ -71,7 +70,7 @@ export default function DiscoverPage() {
         spot.address.toLowerCase().includes(q);
       return byRegion && byQuery;
     });
-  }, [query, filter]);
+  }, [query, filter, allSpots]);
 
   // The grid is paginated but the map never is — a hidden card would mean
   // a pin you cannot click through to.
@@ -80,7 +79,7 @@ export default function DiscoverPage() {
   // Drop the preview if the spot behind it is filtered away, so the card
   // can never describe a pin that is no longer on the map.
   const selectedSpot = useMemo(
-    () => (selectedSpotId && spots.some((s) => s.id === selectedSpotId) ? getSpot(selectedSpotId) : null),
+    () => (selectedSpotId ? spots.find((spot) => spot.id === selectedSpotId) ?? null : null),
     [selectedSpotId, spots],
   );
 
@@ -88,15 +87,15 @@ export default function DiscoverPage() {
   // not hidden, only their gallery is.
   const artists = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return ALL_PEOPLE.filter(
+    return people.filter(
       (p) =>
-        p.id !== CURRENT_USER.id &&
+        p.id !== user?.id &&
         (!q ||
           p.name.toLowerCase().includes(q) ||
           p.handle.toLowerCase().includes(q) ||
           (p.mediums ?? []).some((m) => m.toLowerCase().includes(q))),
     );
-  }, [query]);
+  }, [query, people, user]);
 
   const events = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -110,7 +109,7 @@ export default function DiscoverPage() {
           Discover
         </Typography>
         <Typography variant="h1" component="h1" sx={{ mt: 0.25 }}>
-          Find your next view, {user.firstName}.
+          Find your next view, {user?.firstName || 'there'}.
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
           Painting spots across Alberta, and the people already out there making work.

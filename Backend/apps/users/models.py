@@ -14,12 +14,29 @@ class Profile(models.Model):
     keyed on the token's `sub` claim.
     """
 
+    class Visibility(models.TextChoices):
+        PUBLIC = "public", "Public"
+        PRIVATE = "private", "Private"
+
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     auth0_id = models.CharField(max_length=128, unique=True)
+    slug = models.SlugField(max_length=80, unique=True, null=True, blank=True)
     phone_number = models.CharField(max_length=20, blank=True)
     pfp = models.ImageField(upload_to="pfps/", blank=True, null=True)
     interests = models.CharField(max_length=255, blank=True)
     city = models.CharField(max_length=100, blank=True)
+    display_name = models.CharField(max_length=120, blank=True)
+    handle = models.CharField(max_length=40, blank=True)
+    pronouns = models.CharField(max_length=40, blank=True)
+    bio = models.TextField(blank=True)
+    mediums = models.JSONField(default=list, blank=True)
+    visibility = models.CharField(
+        max_length=10, choices=Visibility.choices, default=Visibility.PUBLIC
+    )
+    tint = models.CharField(max_length=7, blank=True, default="#F1DCEE")
+    followers_count = models.PositiveIntegerField(default=0)
+    following_count = models.PositiveIntegerField(default=0)
+    joined_on = models.DateField(null=True, blank=True)
 
     def __str__(self):
         return self.user.get_username()

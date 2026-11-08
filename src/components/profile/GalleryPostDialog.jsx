@@ -14,9 +14,8 @@ import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
 import { Link as RouterLink } from 'react-router-dom';
 
-import SceneImage from '@/components/common/SceneImage';
+import GalleryImage from '@/components/profile/GalleryImage';
 import PersonLink from '@/components/common/PersonLink';
-import { getSpot } from '@/data/mockData';
 import { formatReviewDate } from '@/data/format';
 import { useAppState } from '@/state/AppState';
 import { BRAND, RADIUS } from '@/theme';
@@ -29,7 +28,7 @@ import { BRAND, RADIUS } from '@/theme';
  * session other people were at.
  */
 export default function GalleryPostDialog({ post, owner, onClose, canDelete }) {
-  const { findEvent, removeGalleryPost } = useAppState();
+  const { findEvent, removeGalleryPost, getSpot } = useAppState();
   const open = Boolean(post);
   const spot = post?.spotId ? getSpot(post.spotId) : null;
   const event = post?.eventId ? findEvent(post.eventId) : null;
@@ -45,8 +44,8 @@ export default function GalleryPostDialog({ post, owner, onClose, canDelete }) {
       {post ? (
         <>
           <Box sx={{ position: 'relative', bgcolor: isArtwork ? '#EFEAE0' : '#101013', p: isArtwork ? 3 : 0 }}>
-            <SceneImage
-              variant={post.scene}
+            <GalleryImage
+              post={post}
               ratio="16 / 10"
               radius={isArtwork ? 3 : 0}
               title={post.title}

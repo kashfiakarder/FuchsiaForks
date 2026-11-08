@@ -1,0 +1,1724 @@
+{
+  "people": [
+    {
+      "slug": "maya",
+      "name": "Maya Chen",
+      "handle": "mayachen",
+      "city": "Calgary, Alberta",
+      "tint": "#DCE8DC",
+      "visibility": "public",
+      "pronouns": "she/her",
+      "bio": "Oil painter and reluctant early riser. I host the creekside sessions at Fish Creek and will absolutely talk your ear off about colour temperature.",
+      "mediums": [
+        "Oil",
+        "Charcoal"
+      ],
+      "joined": "2023-09-02",
+      "followers": 412,
+      "following": 180
+    },
+    {
+      "slug": "jamie",
+      "name": "Jamie Lee",
+      "handle": "jamie.draws",
+      "city": "Calgary, Alberta",
+      "tint": "#F7E3D4",
+      "visibility": "private",
+      "pronouns": "they/them",
+      "bio": "Quiet sessions, small sketchbooks, no small talk until the coffee break.",
+      "mediums": [
+        "Watercolour",
+        "Pencil"
+      ],
+      "joined": "2024-01-18",
+      "followers": 87,
+      "following": 143
+    },
+    {
+      "slug": "sam",
+      "name": "Sam Wilson",
+      "handle": "samwilsonart",
+      "city": "Calgary, Alberta",
+      "tint": "#DDE4F2",
+      "visibility": "public",
+      "pronouns": "he/him",
+      "bio": "Urban sketcher. Skylines, bridges, anything with a hard edge against a soft sky. Golden hour or nothing.",
+      "mediums": [
+        "Ink",
+        "Marker",
+        "Digital"
+      ],
+      "joined": "2023-11-27",
+      "followers": 356,
+      "following": 211
+    },
+    {
+      "slug": "priya",
+      "name": "Priya Shah",
+      "handle": "priyashah",
+      "city": "Edmonton, Alberta",
+      "tint": "#F6DCE8",
+      "visibility": "private",
+      "pronouns": "she/her",
+      "bio": "Botanical ink and the occasional very bad landscape. Mostly here for the walks.",
+      "mediums": [
+        "Ink",
+        "Watercolour"
+      ],
+      "joined": "2024-06-05",
+      "followers": 64,
+      "following": 72
+    },
+    {
+      "slug": "alex",
+      "name": "Alex Laurent",
+      "handle": "alexlaurent",
+      "city": "Calgary, Alberta",
+      "tint": "#F1DCEE",
+      "visibility": "public",
+      "pronouns": "they/them",
+      "bio": "Watercolours, mostly. Happiest on a riverbank before the light gets flat. Trying to paint outside once a week, rain or snow.",
+      "mediums": [
+        "Watercolour",
+        "Gouache",
+        "Ink"
+      ],
+      "joined": "2025-04-12",
+      "followers": 128,
+      "following": 96
+    }
+  ],
+  "spots": [
+    {
+      "slug": "fish-creek",
+      "name": "Fish Creek Provincial Park",
+      "address": "1548 Evergreen Hill SW",
+      "city": "Calgary, AB",
+      "region": "Calgary",
+      "tagline": "Creekside · Open year-round",
+      "scene": "creek",
+      "features": [
+        "Easy trail access",
+        "Best in morning light",
+        "Free parking"
+      ],
+      "about": "Follow the creek to quiet bends, open meadows and cottonwood groves. There’s room to set up an easel and plenty of changing light to keep you inspired.",
+      "latitude": 50.9146,
+      "longitude": -114.0719,
+      "distanceKm": 0.3,
+      "rating": 4.8,
+      "reviewCount": 32,
+      "artistCount": 24
+    },
+    {
+      "slug": "north-glenmore",
+      "name": "North Glenmore Park",
+      "address": "7305 Crowchild Trail SW",
+      "city": "Calgary, AB",
+      "region": "Calgary",
+      "tagline": "Reservoir · Big skies",
+      "scene": "reservoir",
+      "features": [
+        "Benches and tables",
+        "Best in late afternoon",
+        "Washrooms on site"
+      ],
+      "about": "Wide water, long sightlines and the Rockies on a clear afternoon. The light turns over quickly here, which makes it a good place to practise working fast.",
+      "latitude": 51.0005,
+      "longitude": -114.1211,
+      "distanceKm": 4.1,
+      "rating": 4.6,
+      "reviewCount": 21,
+      "artistCount": 17
+    },
+    {
+      "slug": "crescent-heights",
+      "name": "Crescent Heights Lookout",
+      "address": "1 Crescent Road NW",
+      "city": "Calgary, AB",
+      "region": "Calgary",
+      "tagline": "Skyline · Golden hour",
+      "scene": "skyline",
+      "features": [
+        "Step-free viewpoint",
+        "Best at sunset",
+        "Street parking"
+      ],
+      "about": "The classic downtown view across the Bow. Come for the last hour of light, when the towers warm up and the river goes silver.",
+      "latitude": 51.0585,
+      "longitude": -114.0636,
+      "distanceKm": 2.6,
+      "rating": 4.9,
+      "reviewCount": 44,
+      "artistCount": 31
+    },
+    {
+      "slug": "bowness-park",
+      "name": "Bowness Park",
+      "address": "8900 48 Avenue NW",
+      "city": "Calgary, AB",
+      "region": "Calgary",
+      "tagline": "Riverside · Sheltered",
+      "scene": "meadow",
+      "features": [
+        "Café nearby",
+        "Good on windy days",
+        "Paid parking"
+      ],
+      "about": "A gentle lagoon ringed by old poplars. Sheltered enough for windy days, and the reflections hold still long enough to draw.",
+      "latitude": 51.0889,
+      "longitude": -114.2158,
+      "distanceKm": 9.4,
+      "rating": 4.5,
+      "reviewCount": 18,
+      "artistCount": 12
+    },
+    {
+      "slug": "nose-hill",
+      "name": "Nose Hill Park",
+      "address": "5620 14 Street NW",
+      "city": "Calgary, AB",
+      "region": "Calgary",
+      "tagline": "Prairie · Panoramic",
+      "scene": "prairie",
+      "features": [
+        "Wide horizon",
+        "Best midday",
+        "Exposed — bring layers"
+      ],
+      "about": "Grassland above the city with nothing to block the horizon. Bring something to weigh your paper down — it is always windier than it looks.",
+      "latitude": 51.1167,
+      "longitude": -114.1167,
+      "distanceKm": 6.8,
+      "rating": 4.4,
+      "reviewCount": 26,
+      "artistCount": 15
+    },
+    {
+      "slug": "inglewood-sanctuary",
+      "name": "Inglewood Bird Sanctuary",
+      "address": "2425 9 Avenue SE",
+      "city": "Calgary, AB",
+      "region": "Calgary",
+      "tagline": "Woodland · Quiet",
+      "scene": "woods",
+      "features": [
+        "Flat gravel paths",
+        "Shade all day",
+        "No cycling"
+      ],
+      "about": "Dense river forest with dappled light and somewhere new to look every few steps. The quietest spot on this list by a long way.",
+      "latitude": 51.0375,
+      "longitude": -114.0075,
+      "distanceKm": 5.2,
+      "rating": 4.7,
+      "reviewCount": 29,
+      "artistCount": 19
+    },
+    {
+      "slug": "lake-louise",
+      "name": "Lake Louise Shoreline",
+      "address": "Lake Louise Drive",
+      "city": "Banff National Park, AB",
+      "region": "Rockies",
+      "tagline": "Alpine lake · Turquoise water",
+      "scene": "rockies",
+      "features": [
+        "Paved lakeshore path",
+        "Best at first light",
+        "Paid parking — arrive early"
+      ],
+      "about": "The most painted view in Alberta, and still worth it. Arrive before nine if you want the water flat and the shoreline to yourself.",
+      "latitude": 51.4254,
+      "longitude": -116.1773,
+      "distanceKm": 182,
+      "rating": 4.9,
+      "reviewCount": 58,
+      "artistCount": 46
+    },
+    {
+      "slug": "vermilion-lakes",
+      "name": "Vermilion Lakes",
+      "address": "Vermilion Lakes Road",
+      "city": "Banff, AB",
+      "region": "Rockies",
+      "tagline": "Marshland · Mount Rundle",
+      "scene": "rockies",
+      "features": [
+        "Roadside pull-outs",
+        "Best at sunrise",
+        "Free parking"
+      ],
+      "about": "Three shallow lakes with Rundle standing over them. Pull-outs along the road mean you can paint from beside the car on a cold day.",
+      "latitude": 51.1784,
+      "longitude": -115.5926,
+      "distanceKm": 128,
+      "rating": 4.8,
+      "reviewCount": 37,
+      "artistCount": 28
+    },
+    {
+      "slug": "maligne-lake",
+      "name": "Maligne Lake",
+      "address": "Maligne Lake Road",
+      "city": "Jasper National Park, AB",
+      "region": "Rockies",
+      "tagline": "Glacial lake · Remote",
+      "scene": "rockies",
+      "features": [
+        "Boathouse shelter",
+        "Best midday",
+        "Bring everything you need"
+      ],
+      "about": "A long day from Calgary and worth every hour. The light moves fast between the peaks, so work small and work quickly.",
+      "latitude": 52.722,
+      "longitude": -117.642,
+      "distanceKm": 415,
+      "rating": 4.9,
+      "reviewCount": 24,
+      "artistCount": 16
+    },
+    {
+      "slug": "horseshoe-canyon",
+      "name": "Horseshoe Canyon",
+      "address": "Highway 9, west of Drumheller",
+      "city": "Drumheller, AB",
+      "region": "Badlands",
+      "tagline": "Badlands · Banded rock",
+      "scene": "badlands",
+      "features": [
+        "Viewpoint at the rim",
+        "Best in late afternoon",
+        "Free parking"
+      ],
+      "about": "Stripes of ochre, grey and rust cut a hundred metres into flat prairie. A gift if you have been meaning to practise warm neutrals.",
+      "latitude": 51.373,
+      "longitude": -112.623,
+      "distanceKm": 138,
+      "rating": 4.7,
+      "reviewCount": 31,
+      "artistCount": 22
+    },
+    {
+      "slug": "writing-on-stone",
+      "name": "Writing-on-Stone",
+      "address": "Highway 500, Áísínai’pi",
+      "city": "Milk River, AB",
+      "region": "Badlands",
+      "tagline": "Hoodoos · Sacred site",
+      "scene": "badlands",
+      "features": [
+        "Interpretive centre",
+        "Best in morning light",
+        "Respect restricted areas"
+      ],
+      "about": "Hoodoos above the Milk River, and some of the oldest rock art on the continent. A quiet, serious place — paint the landforms, not the petroglyphs.",
+      "latitude": 49.0833,
+      "longitude": -111.6167,
+      "distanceKm": 302,
+      "rating": 4.8,
+      "reviewCount": 19,
+      "artistCount": 11
+    },
+    {
+      "slug": "waterton-townsite",
+      "name": "Waterton Lakes Townsite",
+      "address": "Waterton Avenue",
+      "city": "Waterton Lakes National Park, AB",
+      "region": "Rockies",
+      "tagline": "Where prairie meets peaks",
+      "scene": "rockies",
+      "features": [
+        "Lakeside benches",
+        "Best in evening light",
+        "Notoriously windy"
+      ],
+      "about": "Nowhere else in Alberta do mountains rise straight out of grassland with no foothills in between. Composition does half the work for you.",
+      "latitude": 49.05,
+      "longitude": -113.915,
+      "distanceKm": 265,
+      "rating": 4.7,
+      "reviewCount": 26,
+      "artistCount": 18
+    },
+    {
+      "slug": "river-valley",
+      "name": "North Saskatchewan River Valley",
+      "address": "End of Walterdale Hill",
+      "city": "Edmonton, AB",
+      "region": "Edmonton",
+      "tagline": "River valley · City edge",
+      "scene": "meadow",
+      "features": [
+        "Paved trails",
+        "Good all day",
+        "Transit nearby"
+      ],
+      "about": "The longest stretch of urban parkland in Canada. Bridges, river and skyline all in one view, with somewhere to stand for every one of them.",
+      "latitude": 53.53,
+      "longitude": -113.5,
+      "distanceKm": 299,
+      "rating": 4.6,
+      "reviewCount": 42,
+      "artistCount": 34
+    },
+    {
+      "slug": "abraham-lake",
+      "name": "Abraham Lake",
+      "address": "David Thompson Highway",
+      "city": "Clearwater County, AB",
+      "region": "Rockies",
+      "tagline": "Reservoir · Frozen bubbles",
+      "scene": "reservoir",
+      "features": [
+        "Roadside access",
+        "Best in winter",
+        "No shelter at all"
+      ],
+      "about": "An unreal blue, and in deep winter the methane bubbles stack under the ice. Exposed and cold — this is a hardy-painters-only spot.",
+      "latitude": 52.25,
+      "longitude": -116.4333,
+      "distanceKm": 232,
+      "rating": 4.8,
+      "reviewCount": 15,
+      "artistCount": 9
+    },
+    {
+      "slug": "cypress-hills",
+      "name": "Cypress Hills",
+      "address": "Elkwater townsite",
+      "city": "Cypress County, AB",
+      "region": "Prairie",
+      "tagline": "Highland forest · Dark skies",
+      "scene": "woods",
+      "features": [
+        "Campground nearby",
+        "Shade all day",
+        "Dark-sky preserve"
+      ],
+      "about": "Lodgepole pine six hundred metres above the surrounding plain — an island of forest in the middle of grassland.",
+      "latitude": 49.65,
+      "longitude": -110.25,
+      "distanceKm": 402,
+      "rating": 4.5,
+      "reviewCount": 17,
+      "artistCount": 10
+    },
+    {
+      "slug": "moraine-lake",
+      "name": "Moraine Lake",
+      "address": "Moraine Lake Road",
+      "city": "Banff National Park, AB",
+      "region": "Rockies",
+      "tagline": "Valley of the Ten Peaks",
+      "scene": "rockies",
+      "features": [
+        "Shuttle access only",
+        "Best at sunrise",
+        "Closed in winter"
+      ],
+      "about": "The view from the rockpile is the one on the old twenty-dollar bill. Shuttle only now, which has made it far calmer than it used to be.",
+      "latitude": 51.3217,
+      "longitude": -116.186,
+      "distanceKm": 190,
+      "rating": 4.9,
+      "reviewCount": 63,
+      "artistCount": 41
+    },
+    {
+      "slug": "peyto-lake",
+      "name": "Peyto Lake Overlook",
+      "address": "Bow Summit, Icefields Parkway",
+      "city": "Banff National Park, AB",
+      "region": "Rockies",
+      "tagline": "Glacial flour · Impossible blue",
+      "scene": "rockies",
+      "features": [
+        "Short paved climb",
+        "Best late morning",
+        "Cold and windy at the rail"
+      ],
+      "about": "A wolf-head of meltwater seen from four hundred metres above it. The colour is genuinely hard to mix — bring more cerulean than you think.",
+      "latitude": 51.7167,
+      "longitude": -116.5167,
+      "distanceKm": 212,
+      "rating": 4.8,
+      "reviewCount": 34,
+      "artistCount": 23
+    },
+    {
+      "slug": "two-jack-lake",
+      "name": "Two Jack Lake",
+      "address": "Lake Minnewanka Scenic Drive",
+      "city": "Banff National Park, AB",
+      "region": "Rockies",
+      "tagline": "Still water · Mount Rundle",
+      "scene": "rockies",
+      "features": [
+        "Lakeside pull-outs",
+        "Best at first light",
+        "Picnic tables"
+      ],
+      "about": "Quieter than its famous neighbours and a far better place to actually work. The lakeshore pull-outs let you paint from beside the car.",
+      "latitude": 51.2278,
+      "longitude": -115.4611,
+      "distanceKm": 135,
+      "rating": 4.7,
+      "reviewCount": 28,
+      "artistCount": 20
+    },
+    {
+      "slug": "athabasca-falls",
+      "name": "Athabasca Falls",
+      "address": "Highway 93A",
+      "city": "Jasper National Park, AB",
+      "region": "Rockies",
+      "tagline": "Gorge · Meltwater",
+      "scene": "rockies",
+      "features": [
+        "Boardwalk viewpoints",
+        "Good all day",
+        "Spray zone — cover your work"
+      ],
+      "about": "Not tall, but enormously powerful, and the quartzite gorge below it is the real subject. Spray reaches further than you expect — mind your paper.",
+      "latitude": 52.665,
+      "longitude": -117.8855,
+      "distanceKm": 405,
+      "rating": 4.7,
+      "reviewCount": 22,
+      "artistCount": 14
+    },
+    {
+      "slug": "pyramid-lake",
+      "name": "Pyramid Lake",
+      "address": "Pyramid Lake Road",
+      "city": "Jasper National Park, AB",
+      "region": "Rockies",
+      "tagline": "Island bridge · Dark skies",
+      "scene": "rockies",
+      "features": [
+        "Flat lakeshore walk",
+        "Best in evening light",
+        "Dark-sky preserve"
+      ],
+      "about": "A small wooden bridge to a pine island, with Pyramid Mountain behind it. One of the few spots up here that is easy to compose.",
+      "latitude": 52.9203,
+      "longitude": -118.1,
+      "distanceKm": 420,
+      "rating": 4.6,
+      "reviewCount": 18,
+      "artistCount": 12
+    },
+    {
+      "slug": "upper-kananaskis",
+      "name": "Upper Kananaskis Lake",
+      "address": "Kananaskis Lakes Trail",
+      "city": "Kananaskis Country, AB",
+      "region": "Foothills",
+      "tagline": "Alpine reservoir · No crowds",
+      "scene": "rockies",
+      "features": [
+        "Parking at the dam",
+        "Best midday",
+        "Conservation pass required"
+      ],
+      "about": "Everything Banff has without the coaches. Drowned stumps along the shoreline give you foreground for free, which is rarer than it sounds.",
+      "latitude": 50.6333,
+      "longitude": -115.1333,
+      "distanceKm": 125,
+      "rating": 4.8,
+      "reviewCount": 25,
+      "artistCount": 17
+    },
+    {
+      "slug": "policemans-creek",
+      "name": "Policeman’s Creek, Canmore",
+      "address": "Canmore boardwalk",
+      "city": "Canmore, AB",
+      "region": "Foothills",
+      "tagline": "Boardwalk · Three Sisters",
+      "scene": "creek",
+      "features": [
+        "Boardwalk the whole way",
+        "Good all day",
+        "Cafés nearby"
+      ],
+      "about": "A slow creek running through town with the Three Sisters standing over it, and a coffee thirty seconds away. The easiest mountain painting in Alberta.",
+      "latitude": 51.0884,
+      "longitude": -115.3479,
+      "distanceKm": 105,
+      "rating": 4.6,
+      "reviewCount": 31,
+      "artistCount": 26
+    },
+    {
+      "slug": "frank-slide",
+      "name": "Frank Slide",
+      "address": "Crowsnest Highway",
+      "city": "Crowsnest Pass, AB",
+      "region": "Foothills",
+      "tagline": "Rockfall · Turtle Mountain",
+      "scene": "rockies",
+      "features": [
+        "Interpretive centre",
+        "Best in flat light",
+        "Stay on marked trails"
+      ],
+      "about": "Eighty million tonnes of limestone across a valley floor, and a town underneath it. A sober place, and an extraordinary study in grey.",
+      "latitude": 49.5942,
+      "longitude": -114.4053,
+      "distanceKm": 195,
+      "rating": 4.5,
+      "reviewCount": 14,
+      "artistCount": 8
+    },
+    {
+      "slug": "dinosaur-park",
+      "name": "Dinosaur Provincial Park",
+      "address": "Patricia access road",
+      "city": "Brooks, AB",
+      "region": "Badlands",
+      "tagline": "Coulees · World Heritage",
+      "scene": "badlands",
+      "features": [
+        "Loop road to viewpoints",
+        "Best early or late",
+        "No shade — bring water"
+      ],
+      "about": "Hoodoos and eroded coulees over the Red Deer River. Shadows move fast across the formations, so pick your moment and commit to it.",
+      "latitude": 50.7606,
+      "longitude": -111.4933,
+      "distanceKm": 215,
+      "rating": 4.8,
+      "reviewCount": 27,
+      "artistCount": 16
+    },
+    {
+      "slug": "head-smashed-in",
+      "name": "Head-Smashed-In Buffalo Jump",
+      "address": "Spring Point Road",
+      "city": "Fort Macleod, AB",
+      "region": "Prairie",
+      "tagline": "Sandstone cliff · World Heritage",
+      "scene": "prairie",
+      "features": [
+        "Interpretive centre",
+        "Best in afternoon light",
+        "Respect the site"
+      ],
+      "about": "A long sandstone escarpment above open grassland, used for nearly six thousand years. Paint the land; be thoughtful about what it is.",
+      "latitude": 49.7,
+      "longitude": -113.6256,
+      "distanceKm": 175,
+      "rating": 4.6,
+      "reviewCount": 16,
+      "artistCount": 9
+    },
+    {
+      "slug": "sylvan-lake",
+      "name": "Sylvan Lake",
+      "address": "Lakeshore Drive",
+      "city": "Sylvan Lake, AB",
+      "region": "Central",
+      "tagline": "Beach town · Long light",
+      "scene": "reservoir",
+      "features": [
+        "Pier and boardwalk",
+        "Best at sunset",
+        "Everything within walking distance"
+      ],
+      "about": "A proper lake town with a pier, a beach and an unbroken western horizon. Busy in July, entirely yours in October.",
+      "latitude": 52.31,
+      "longitude": -114.0956,
+      "distanceKm": 165,
+      "rating": 4.4,
+      "reviewCount": 23,
+      "artistCount": 18
+    },
+    {
+      "slug": "dry-island",
+      "name": "Dry Island Buffalo Jump",
+      "address": "Range Road 21-1",
+      "city": "Trochu, AB",
+      "region": "Central",
+      "tagline": "Hidden canyon · Flat-top butte",
+      "scene": "badlands",
+      "features": [
+        "Steep access road",
+        "Best in morning light",
+        "No services at all"
+      ],
+      "about": "You drive across wheat fields and then the ground simply falls away. Almost nobody comes here, which is most of its appeal.",
+      "latitude": 51.9333,
+      "longitude": -112.9667,
+      "distanceKm": 185,
+      "rating": 4.5,
+      "reviewCount": 11,
+      "artistCount": 7
+    },
+    {
+      "slug": "elk-island",
+      "name": "Elk Island National Park",
+      "address": "Highway 16 east",
+      "city": "Strathcona County, AB",
+      "region": "Edmonton",
+      "tagline": "Aspen parkland · Bison",
+      "scene": "woods",
+      "features": [
+        "Lakeside trails",
+        "Best at golden hour",
+        "Give bison room"
+      ],
+      "about": "Rolling aspen and kettle lakes forty minutes from Edmonton, with free-roaming bison. Keep a sensible distance and paint from the car if the herd is close.",
+      "latitude": 53.6,
+      "longitude": -112.8667,
+      "distanceKm": 320,
+      "rating": 4.6,
+      "reviewCount": 20,
+      "artistCount": 15
+    },
+    {
+      "slug": "lesser-slave-lake",
+      "name": "Lesser Slave Lake",
+      "address": "Devonshire Beach",
+      "city": "Slave Lake, AB",
+      "region": "Northern",
+      "tagline": "Inland sea · Boreal shore",
+      "scene": "reservoir",
+      "features": [
+        "Long sand beach",
+        "Best in evening light",
+        "Campground nearby"
+      ],
+      "about": "Big enough that the far shore disappears, and the sand goes on for kilometres. A good place to work on nothing but sky and water.",
+      "latitude": 55.4167,
+      "longitude": -115,
+      "distanceKm": 520,
+      "rating": 4.5,
+      "reviewCount": 12,
+      "artistCount": 7
+    },
+    {
+      "slug": "peace-river-lookout",
+      "name": "Peace River Lookout",
+      "address": "12 Street lookout",
+      "city": "Peace River, AB",
+      "region": "Northern",
+      "tagline": "River valley · Big north",
+      "scene": "meadow",
+      "features": [
+        "Drive to the viewpoint",
+        "Best midday",
+        "Very long drive — plan it"
+      ],
+      "about": "A deep green valley cut through farmland, seen from the hill above town. The furthest spot on this list and the one most worth the drive.",
+      "latitude": 56.2333,
+      "longitude": -117.2833,
+      "distanceKm": 710,
+      "rating": 4.6,
+      "reviewCount": 9,
+      "artistCount": 5
+    },
+    {
+      "slug": "lac-la-biche",
+      "name": "Lac La Biche",
+      "address": "Sir Winston Churchill Provincial Park",
+      "city": "Lac La Biche, AB",
+      "region": "Northern",
+      "tagline": "Boreal lake · Birdlife",
+      "scene": "woods",
+      "features": [
+        "Island causeway",
+        "Shade all day",
+        "Birding hides"
+      ],
+      "about": "A causeway runs out to a wooded island in the middle of the lake. Pelicans in summer, and some of the quietest painting in the province.",
+      "latitude": 54.7667,
+      "longitude": -111.9667,
+      "distanceKm": 480,
+      "rating": 4.4,
+      "reviewCount": 10,
+      "artistCount": 6
+    }
+  ],
+  "events": [
+    {
+      "slug": "creekside-colour-study",
+      "title": "Creekside Colour Study",
+      "spot": "fish-creek",
+      "host": "maya",
+      "start": "2026-11-14T10:00:00-07:00",
+      "end": "2026-11-14T12:30:00-07:00",
+      "badge": "Community paint-out",
+      "meetingPoint": "Evergreen Hill trail entrance",
+      "skillNote": "All skill levels welcome",
+      "scene": "paintout",
+      "headline": "A morning of colour, creekside.",
+      "description": [
+        "Let’s slow down and follow the light along Fish Creek. We’ll start with a few small colour studies, then find our own view to paint. Bring your favourite medium, a warm drink and a little curiosity.",
+        "We’ll meet at the Evergreen Hill trail entrance at 10:00 AM and walk down to the creek together. No instruction, no pressure — just a friendly group making art outside."
+      ],
+      "kit": {
+        "title": "Bring your outdoor kit",
+        "body": "Paints or sketchbook, a portable seat, layers and water."
+      },
+      "weatherNote": {
+        "title": "Dress for a Calgary morning",
+        "body": "We paint in cool weather. Check the chat for any last-minute changes."
+      },
+      "gallery": [
+        "palette",
+        "creek",
+        "paintout"
+      ],
+      "timezone": "Mountain Standard Time",
+      "attendees": 18,
+      "pinned": "Meet at the Evergreen Hill trail entrance. Bring warm layers!",
+      "past": false
+    },
+    {
+      "slug": "reservoir-light-layers",
+      "title": "Reservoir Light & Layers",
+      "spot": "north-glenmore",
+      "host": "alex",
+      "start": "2026-11-22T14:00:00-07:00",
+      "end": "2026-11-22T16:30:00-07:00",
+      "badge": "Hosted paint-out",
+      "meetingPoint": "Sailing school parking lot",
+      "skillNote": "Bring any medium",
+      "scene": "reservoir",
+      "headline": "Chasing the last of the afternoon.",
+      "description": [
+        "The reservoir gives you about ninety good minutes before the light drops behind the ridge. We’ll use them. Expect quick studies rather than finished pieces.",
+        "I’ll bring spare boards and a thermos. Come for all of it or just an hour."
+      ],
+      "kit": {
+        "title": "Pack light, work fast",
+        "body": "Small boards, a limited palette and something warm to sit on."
+      },
+      "weatherNote": {
+        "title": "It is windier by the water",
+        "body": "Clips or tape for your paper are worth the space in your bag."
+      },
+      "gallery": [
+        "reservoir",
+        "meadow",
+        "palette"
+      ],
+      "timezone": "Mountain Standard Time",
+      "attendees": 12,
+      "pinned": "Parking fills up fast — aim to arrive by 1:45 PM.",
+      "past": false
+    },
+    {
+      "slug": "skyline-sketch-social",
+      "title": "Skyline Sketch Social",
+      "spot": "crescent-heights",
+      "host": "sam",
+      "start": "2026-11-28T15:00:00-07:00",
+      "end": "2026-11-28T17:00:00-07:00",
+      "badge": "Sketch social",
+      "meetingPoint": "The lookout railing",
+      "skillNote": "Beginners very welcome",
+      "scene": "skyline",
+      "headline": "Draw the city, then go get a coffee.",
+      "description": [
+        "A relaxed two hours at the lookout while the towers catch the last of the sun. Sketchbooks, pens, whatever you have.",
+        "We usually walk down to a café on Edmonton Trail afterwards. Entirely optional, always good."
+      ],
+      "kit": {
+        "title": "A sketchbook is plenty",
+        "body": "Pen or pencil, a folding stool if you have one, and gloves."
+      },
+      "weatherNote": {
+        "title": "The lookout is exposed",
+        "body": "It gets cold the moment the sun drops. Dress for after, not for now."
+      },
+      "gallery": [
+        "skyline",
+        "palette",
+        "meadow"
+      ],
+      "timezone": "Mountain Standard Time",
+      "attendees": 9,
+      "pinned": "Sunset is 4:42 PM. Try to be set up by 4:00.",
+      "past": false
+    },
+    {
+      "slug": "quiet-morning-quick-sketches",
+      "title": "Quiet Morning, Quick Sketches",
+      "spot": "fish-creek",
+      "host": "jamie",
+      "start": "2026-11-21T09:00:00-07:00",
+      "end": "2026-11-21T11:00:00-07:00",
+      "badge": "Early session",
+      "meetingPoint": "Bridge 4 car park",
+      "skillNote": "Quiet, focused session",
+      "scene": "creek",
+      "headline": "Two hours, barely any talking.",
+      "description": [
+        "For anyone who likes company but not conversation. We spread out along the creek, work for two hours, then compare pages at the end if you want to.",
+        "Arrive any time in the first twenty minutes."
+      ],
+      "kit": {
+        "title": "Whatever you can carry",
+        "body": "Sketchbook, one pen, and a flask of something hot."
+      },
+      "weatherNote": {
+        "title": "Frost is likely",
+        "body": "The creek path can be slippery first thing. Boots over trainers."
+      },
+      "gallery": [
+        "creek",
+        "woods",
+        "palette"
+      ],
+      "timezone": "Mountain Standard Time",
+      "attendees": 8,
+      "pinned": "",
+      "past": false
+    },
+    {
+      "slug": "woodland-ink-walk",
+      "title": "Woodland Ink Walk",
+      "spot": "inglewood-sanctuary",
+      "host": "priya",
+      "start": "2026-12-05T11:00:00-07:00",
+      "end": "2026-12-05T13:00:00-07:00",
+      "badge": "Walk and draw",
+      "meetingPoint": "Sanctuary gate",
+      "skillNote": "Ink and pencil focus",
+      "scene": "woods",
+      "headline": "Stop every ten minutes. Draw what’s in front of you.",
+      "description": [
+        "A slow loop of the sanctuary with five short stops. Five drawings, ten minutes each, no erasing.",
+        "It is a brilliant way to loosen up if your work has gone stiff."
+      ],
+      "kit": {
+        "title": "Ink, nib or brush pen",
+        "body": "Plus a small hardback sketchbook you can hold standing up."
+      },
+      "weatherNote": {
+        "title": "Shade all the way round",
+        "body": "It runs several degrees colder than the open park. Layer up."
+      },
+      "gallery": [
+        "woods",
+        "creek",
+        "palette"
+      ],
+      "timezone": "Mountain Standard Time",
+      "attendees": 11,
+      "pinned": "",
+      "past": false
+    },
+    {
+      "slug": "prairie-wide-horizons",
+      "title": "Prairie Wide Horizons",
+      "spot": "nose-hill",
+      "host": "sam",
+      "start": "2026-12-12T12:00:00-07:00",
+      "end": "2026-12-12T14:30:00-07:00",
+      "badge": "Community paint-out",
+      "meetingPoint": "14 Street lot, north end",
+      "skillNote": "All skill levels welcome",
+      "scene": "prairie",
+      "headline": "Nothing but horizon to get wrong.",
+      "description": [
+        "A session about simplification: three bands, two values, one idea. Nose Hill is the right place to practise it.",
+        "We’ll regroup at the cairn at the end to look at everyone’s panels."
+      ],
+      "kit": {
+        "title": "Something to hold it all down",
+        "body": "Clips, tape, a weighted bag — the wind is the real subject here."
+      },
+      "weatherNote": {
+        "title": "Fully exposed",
+        "body": "There is no shelter on the hill. Windproof layers, properly."
+      },
+      "gallery": [
+        "prairie",
+        "meadow",
+        "palette"
+      ],
+      "timezone": "Mountain Standard Time",
+      "attendees": 14,
+      "pinned": "",
+      "past": false
+    },
+    {
+      "slug": "moraine-first-light",
+      "title": "Moraine Lake, First Light",
+      "spot": "moraine-lake",
+      "host": "priya",
+      "start": "2026-11-29T07:00:00-07:00",
+      "end": "2026-11-29T09:30:00-07:00",
+      "badge": "Early session",
+      "meetingPoint": "Rockpile trailhead",
+      "skillNote": "Bring any medium",
+      "scene": "rockies",
+      "headline": "Up before the shuttle, out before the crowd.",
+      "description": [
+        "The twenty minutes either side of sunrise are the whole reason to come. We will be set up on the rockpile before it starts.",
+        "Dress as though it is January, because at that hour it is."
+      ],
+      "kit": {
+        "title": "Cold-weather kit",
+        "body": "Gloves you can paint in, a headlamp and a flask."
+      },
+      "weatherNote": {
+        "title": "Below freezing at dawn",
+        "body": "Water-based media will slush. Oils or pencil are safer."
+      },
+      "gallery": [
+        "rockies",
+        "palette",
+        "woods"
+      ],
+      "timezone": "Mountain Standard Time",
+      "attendees": 7,
+      "pinned": "",
+      "past": false
+    },
+    {
+      "slug": "kananaskis-snow-study",
+      "title": "Kananaskis Snow Study",
+      "spot": "upper-kananaskis",
+      "host": "sam",
+      "start": "2026-12-06T11:00:00-07:00",
+      "end": "2026-12-06T13:30:00-07:00",
+      "badge": "Community paint-out",
+      "meetingPoint": "Upper Lake day-use lot",
+      "skillNote": "All skill levels welcome",
+      "scene": "rockies",
+      "headline": "Snow is not white. Come and prove it.",
+      "description": [
+        "A session about seeing colour in snow — the blues in shadow, the warmth where the sun catches it. We will work small and compare at the end.",
+        "A conservation pass is required for the parking lot."
+      ],
+      "kit": {
+        "title": "Limited palette",
+        "body": "Two blues, one earth, white. That is genuinely enough."
+      },
+      "weatherNote": {
+        "title": "Full winter conditions",
+        "body": "Boots and traction. The lot is not always ploughed early."
+      },
+      "gallery": [
+        "rockies",
+        "meadow",
+        "palette"
+      ],
+      "timezone": "Mountain Standard Time",
+      "attendees": 10,
+      "pinned": "",
+      "past": false
+    },
+    {
+      "slug": "canmore-creek-hour",
+      "title": "Canmore Creek Hour",
+      "spot": "policemans-creek",
+      "host": "jamie",
+      "start": "2026-11-19T13:00:00-07:00",
+      "end": "2026-11-19T15:00:00-07:00",
+      "badge": "Sketch social",
+      "meetingPoint": "Boardwalk by the Civic Centre",
+      "skillNote": "Beginners very welcome",
+      "scene": "creek",
+      "headline": "One hour on the boardwalk, one hour in the café.",
+      "description": [
+        "The lowest-commitment session we run. Draw the creek and the Three Sisters for an hour, then warm up over coffee with everyone.",
+        "Perfect if you have never done this before."
+      ],
+      "kit": {
+        "title": "A sketchbook and a pen",
+        "body": "That is the entire list. Borrow from us if you forget."
+      },
+      "weatherNote": {
+        "title": "Sheltered, but cold",
+        "body": "The boardwalk is out of the wind. Still bring a hat."
+      },
+      "gallery": [
+        "creek",
+        "rockies",
+        "palette"
+      ],
+      "timezone": "Mountain Standard Time",
+      "attendees": 13,
+      "pinned": "",
+      "past": false
+    },
+    {
+      "slug": "past-1",
+      "title": "Autumn Creek Studies",
+      "spot": "fish-creek",
+      "host": "maya",
+      "start": "2026-10-31T10:00:00-06:00",
+      "end": "2026-10-31T12:30:00-06:00",
+      "badge": "",
+      "meetingPoint": "",
+      "skillNote": "",
+      "scene": "creek",
+      "headline": "Autumn Creek Studies",
+      "description": [],
+      "kit": {
+        "title": "",
+        "body": ""
+      },
+      "weatherNote": {
+        "title": "",
+        "body": ""
+      },
+      "gallery": [],
+      "timezone": "Mountain Standard Time",
+      "attendees": 21,
+      "pinned": "",
+      "past": true
+    },
+    {
+      "slug": "past-2",
+      "title": "Last Light at the Reservoir",
+      "spot": "north-glenmore",
+      "host": "alex",
+      "start": "2026-10-24T16:00:00-06:00",
+      "end": "2026-10-24T18:30:00-06:00",
+      "badge": "",
+      "meetingPoint": "",
+      "skillNote": "",
+      "scene": "reservoir",
+      "headline": "Last Light at the Reservoir",
+      "description": [],
+      "kit": {
+        "title": "",
+        "body": ""
+      },
+      "weatherNote": {
+        "title": "",
+        "body": ""
+      },
+      "gallery": [],
+      "timezone": "Mountain Standard Time",
+      "attendees": 15,
+      "pinned": "",
+      "past": true
+    },
+    {
+      "slug": "past-3",
+      "title": "Downtown in Ten Minutes",
+      "spot": "crescent-heights",
+      "host": "sam",
+      "start": "2026-10-17T15:30:00-06:00",
+      "end": "2026-10-17T17:30:00-06:00",
+      "badge": "",
+      "meetingPoint": "",
+      "skillNote": "",
+      "scene": "skyline",
+      "headline": "Downtown in Ten Minutes",
+      "description": [],
+      "kit": {
+        "title": "",
+        "body": ""
+      },
+      "weatherNote": {
+        "title": "",
+        "body": ""
+      },
+      "gallery": [],
+      "timezone": "Mountain Standard Time",
+      "attendees": 12,
+      "pinned": "",
+      "past": true
+    },
+    {
+      "slug": "past-4",
+      "title": "Cottonwood Sketch Morning",
+      "spot": "fish-creek",
+      "host": "jamie",
+      "start": "2026-10-10T09:30:00-06:00",
+      "end": "2026-10-10T11:30:00-06:00",
+      "badge": "",
+      "meetingPoint": "",
+      "skillNote": "",
+      "scene": "woods",
+      "headline": "Cottonwood Sketch Morning",
+      "description": [],
+      "kit": {
+        "title": "",
+        "body": ""
+      },
+      "weatherNote": {
+        "title": "",
+        "body": ""
+      },
+      "gallery": [],
+      "timezone": "Mountain Standard Time",
+      "attendees": 9,
+      "pinned": "",
+      "past": true
+    },
+    {
+      "slug": "past-5",
+      "title": "Grassland Greys",
+      "spot": "nose-hill",
+      "host": "priya",
+      "start": "2026-10-03T12:00:00-06:00",
+      "end": "2026-10-03T14:30:00-06:00",
+      "badge": "",
+      "meetingPoint": "",
+      "skillNote": "",
+      "scene": "prairie",
+      "headline": "Grassland Greys",
+      "description": [],
+      "kit": {
+        "title": "",
+        "body": ""
+      },
+      "weatherNote": {
+        "title": "",
+        "body": ""
+      },
+      "gallery": [],
+      "timezone": "Mountain Standard Time",
+      "attendees": 17,
+      "pinned": "",
+      "past": true
+    },
+    {
+      "slug": "past-6",
+      "title": "Lagoon Reflections",
+      "spot": "bowness-park",
+      "host": "maya",
+      "start": "2026-09-26T14:00:00-06:00",
+      "end": "2026-09-26T16:30:00-06:00",
+      "badge": "",
+      "meetingPoint": "",
+      "skillNote": "",
+      "scene": "meadow",
+      "headline": "Lagoon Reflections",
+      "description": [],
+      "kit": {
+        "title": "",
+        "body": ""
+      },
+      "weatherNote": {
+        "title": "",
+        "body": ""
+      },
+      "gallery": [],
+      "timezone": "Mountain Standard Time",
+      "attendees": 13,
+      "pinned": "",
+      "past": true
+    },
+    {
+      "slug": "past-7",
+      "title": "Birdsong and Brushwork",
+      "spot": "inglewood-sanctuary",
+      "host": "priya",
+      "start": "2026-09-19T10:30:00-06:00",
+      "end": "2026-09-19T12:30:00-06:00",
+      "badge": "",
+      "meetingPoint": "",
+      "skillNote": "",
+      "scene": "woods",
+      "headline": "Birdsong and Brushwork",
+      "description": [],
+      "kit": {
+        "title": "",
+        "body": ""
+      },
+      "weatherNote": {
+        "title": "",
+        "body": ""
+      },
+      "gallery": [],
+      "timezone": "Mountain Standard Time",
+      "attendees": 11,
+      "pinned": "",
+      "past": true
+    },
+    {
+      "slug": "past-8",
+      "title": "Bow River Panels",
+      "spot": "crescent-heights",
+      "host": "jamie",
+      "start": "2026-09-12T17:00:00-06:00",
+      "end": "2026-09-12T19:30:00-06:00",
+      "badge": "",
+      "meetingPoint": "",
+      "skillNote": "",
+      "scene": "skyline",
+      "headline": "Bow River Panels",
+      "description": [],
+      "kit": {
+        "title": "",
+        "body": ""
+      },
+      "weatherNote": {
+        "title": "",
+        "body": ""
+      },
+      "gallery": [],
+      "timezone": "Mountain Standard Time",
+      "attendees": 19,
+      "pinned": "",
+      "past": true
+    },
+    {
+      "slug": "past-9",
+      "title": "Three Values, One Hour",
+      "spot": "nose-hill",
+      "host": "sam",
+      "start": "2026-09-05T11:00:00-06:00",
+      "end": "2026-09-05T13:30:00-06:00",
+      "badge": "",
+      "meetingPoint": "",
+      "skillNote": "",
+      "scene": "prairie",
+      "headline": "Three Values, One Hour",
+      "description": [],
+      "kit": {
+        "title": "",
+        "body": ""
+      },
+      "weatherNote": {
+        "title": "",
+        "body": ""
+      },
+      "gallery": [],
+      "timezone": "Mountain Standard Time",
+      "attendees": 8,
+      "pinned": "",
+      "past": true
+    },
+    {
+      "slug": "past-10",
+      "title": "Quiet Water, Slow Pencils",
+      "spot": "bowness-park",
+      "host": "alex",
+      "start": "2026-08-29T09:00:00-06:00",
+      "end": "2026-08-29T11:30:00-06:00",
+      "badge": "",
+      "meetingPoint": "",
+      "skillNote": "",
+      "scene": "meadow",
+      "headline": "Quiet Water, Slow Pencils",
+      "description": [],
+      "kit": {
+        "title": "",
+        "body": ""
+      },
+      "weatherNote": {
+        "title": "",
+        "body": ""
+      },
+      "gallery": [],
+      "timezone": "Mountain Standard Time",
+      "attendees": 14,
+      "pinned": "",
+      "past": true
+    },
+    {
+      "slug": "past-11",
+      "title": "Creekside Wash Workshop",
+      "spot": "fish-creek",
+      "host": "maya",
+      "start": "2026-08-22T10:00:00-06:00",
+      "end": "2026-08-22T12:30:00-06:00",
+      "badge": "",
+      "meetingPoint": "",
+      "skillNote": "",
+      "scene": "creek",
+      "headline": "Creekside Wash Workshop",
+      "description": [],
+      "kit": {
+        "title": "",
+        "body": ""
+      },
+      "weatherNote": {
+        "title": "",
+        "body": ""
+      },
+      "gallery": [],
+      "timezone": "Mountain Standard Time",
+      "attendees": 23,
+      "pinned": "",
+      "past": true
+    },
+    {
+      "slug": "past-12",
+      "title": "Summer Evening Skyline",
+      "spot": "crescent-heights",
+      "host": "sam",
+      "start": "2026-08-15T19:00:00-06:00",
+      "end": "2026-08-15T21:30:00-06:00",
+      "badge": "",
+      "meetingPoint": "",
+      "skillNote": "",
+      "scene": "skyline",
+      "headline": "Summer Evening Skyline",
+      "description": [],
+      "kit": {
+        "title": "",
+        "body": ""
+      },
+      "weatherNote": {
+        "title": "",
+        "body": ""
+      },
+      "gallery": [],
+      "timezone": "Mountain Standard Time",
+      "attendees": 26,
+      "pinned": "",
+      "past": true
+    }
+  ],
+  "reviews": [
+    {
+      "spot": "fish-creek",
+      "author": "maya",
+      "date": "2026-11-05",
+      "rating": 5,
+      "body": "The creek reflections are beautiful in the morning. Bring a warm layer and a small folding stool!"
+    },
+    {
+      "spot": "fish-creek",
+      "author": "jamie",
+      "date": "2026-10-28",
+      "rating": 5,
+      "body": "A favourite for colour studies. Lots of space, even with a group. The path is easy with an easel."
+    },
+    {
+      "spot": "fish-creek",
+      "author": "sam",
+      "date": "2026-10-24",
+      "rating": 5,
+      "body": "Went down at sunrise and had the whole bend to myself. The cottonwoods are worth the walk."
+    },
+    {
+      "spot": "north-glenmore",
+      "author": "priya",
+      "date": "2026-10-30",
+      "rating": 5,
+      "body": "Huge skies. Get there an hour before sunset and you will not want to leave."
+    },
+    {
+      "spot": "north-glenmore",
+      "author": "maya",
+      "date": "2026-10-11",
+      "rating": 4,
+      "body": "Lovely light, but the wind off the water is no joke. Bring clips for your paper."
+    },
+    {
+      "spot": "crescent-heights",
+      "author": "jamie",
+      "date": "2026-11-01",
+      "rating": 5,
+      "body": "The best downtown view in the city and it is free. Busy at golden hour, worth it anyway."
+    }
+  ],
+  "messages": [
+    {
+      "event": "creekside-colour-study",
+      "author": "maya",
+      "at": "2026-11-12T09:14:00-07:00",
+      "body": "Hi everyone! So happy you’re joining on Saturday. We’ll meet at the Evergreen Hill entrance and walk to the creek together."
+    },
+    {
+      "event": "creekside-colour-study",
+      "author": "jamie",
+      "at": "2026-11-12T09:16:00-07:00",
+      "body": "Looking forward to it! Is watercolour okay, or is this mostly an oil painting group?"
+    },
+    {
+      "event": "creekside-colour-study",
+      "author": "alex",
+      "at": "2026-11-12T09:18:00-07:00",
+      "body": "I’m bringing watercolours too, Jamie! Excited to finally paint this spot with a group."
+    },
+    {
+      "event": "creekside-colour-study",
+      "author": "maya",
+      "at": "2026-11-12T09:20:00-07:00",
+      "body": "Every medium is welcome! A sketchbook is perfect too. See you by the trail! 🌿"
+    },
+    {
+      "event": "reservoir-light-layers",
+      "author": "alex",
+      "at": "2026-11-10T18:02:00-07:00",
+      "body": "Boards and a thermos are sorted. Shout if you need anything else brought along."
+    },
+    {
+      "event": "reservoir-light-layers",
+      "author": "jamie",
+      "at": "2026-11-11T08:30:00-07:00",
+      "body": "I’ll bring extra paper."
+    },
+    {
+      "event": "skyline-sketch-social",
+      "author": "sam",
+      "at": "2026-11-09T12:40:00-07:00",
+      "body": "Added a café stop afterwards for anyone who fancies it."
+    },
+    {
+      "event": "skyline-sketch-social",
+      "author": "alex",
+      "at": "2026-11-09T13:05:00-07:00",
+      "body": "Can’t wait for this one."
+    }
+  ],
+  "gallery": [
+    {
+      "owner": "alex",
+      "kind": "artwork",
+      "scene": "creek",
+      "title": "Fish Creek, first frost",
+      "medium": "Watercolour on cold press",
+      "caption": "Forty minutes before my hands gave out. The bank was all violets and I only noticed when I got home.",
+      "spot": "fish-creek",
+      "event": "creekside-colour-study",
+      "date": "2026-10-31",
+      "likes": 34
+    },
+    {
+      "owner": "alex",
+      "kind": "moment",
+      "scene": "paintout",
+      "title": "The Thursday crowd",
+      "medium": "",
+      "caption": "Eleven of us along the creek. Nobody said much for an hour, which was the point.",
+      "spot": "fish-creek",
+      "event": "creekside-colour-study",
+      "date": "2026-10-24",
+      "likes": 52
+    },
+    {
+      "owner": "alex",
+      "kind": "artwork",
+      "scene": "reservoir",
+      "title": "Glenmore, last light",
+      "medium": "Gouache",
+      "caption": "Tried to get the whole thing down in one sitting. Lost the sky, kept the water.",
+      "spot": "north-glenmore",
+      "event": "reservoir-light-layers",
+      "date": "2026-10-18",
+      "likes": 41
+    },
+    {
+      "owner": "alex",
+      "kind": "artwork",
+      "scene": "skyline",
+      "title": "Downtown from Crescent Heights",
+      "medium": "Ink and wash",
+      "caption": "The towers go properly orange for about four minutes. This is minute three.",
+      "spot": "crescent-heights",
+      "event": "",
+      "date": "2026-09-28",
+      "likes": 67
+    },
+    {
+      "owner": "alex",
+      "kind": "moment",
+      "scene": "palette",
+      "title": "Palette after a long one",
+      "medium": "",
+      "caption": "Six hours of mixing greys. Worth photographing before I cleaned it off.",
+      "spot": "",
+      "event": "",
+      "date": "2026-09-14",
+      "likes": 23
+    },
+    {
+      "owner": "alex",
+      "kind": "artwork",
+      "scene": "rockies",
+      "title": "Study from the Icefields Parkway",
+      "medium": "Watercolour, 15 × 20 cm",
+      "caption": "Painted from the back of the car with the heater on. Not ashamed of it.",
+      "spot": "peyto-lake",
+      "event": "",
+      "date": "2026-08-22",
+      "likes": 58
+    },
+    {
+      "owner": "maya",
+      "kind": "artwork",
+      "scene": "creek",
+      "title": "Cottonwoods, late October",
+      "medium": "Oil on panel, 30 × 40 cm",
+      "caption": "Three sessions on the same bend. The third one finally held together.",
+      "spot": "fish-creek",
+      "event": "",
+      "date": "2026-11-02",
+      "likes": 184
+    },
+    {
+      "owner": "maya",
+      "kind": "moment",
+      "scene": "paintout",
+      "title": "Teaching the creekside group",
+      "medium": "",
+      "caption": "Eighteen people and one very patient thermos.",
+      "spot": "fish-creek",
+      "event": "creekside-colour-study",
+      "date": "2026-10-28",
+      "likes": 96
+    },
+    {
+      "owner": "maya",
+      "kind": "artwork",
+      "scene": "rockies",
+      "title": "Moraine, before the shuttle",
+      "medium": "Oil on linen, 50 × 70 cm",
+      "caption": "Up at four. Painted in gloves. Would do it again tomorrow.",
+      "spot": "moraine-lake",
+      "event": "",
+      "date": "2026-09-19",
+      "likes": 312
+    },
+    {
+      "owner": "maya",
+      "kind": "artwork",
+      "scene": "badlands",
+      "title": "Horseshoe Canyon, raw sienna",
+      "medium": "Oil on panel",
+      "caption": "A whole painting out of four pigments. The badlands make that easy.",
+      "spot": "horseshoe-canyon",
+      "event": "",
+      "date": "2026-08-30",
+      "likes": 147
+    },
+    {
+      "owner": "maya",
+      "kind": "moment",
+      "scene": "meadow",
+      "title": "Scouting Bowness",
+      "medium": "",
+      "caption": "Walked the whole lagoon looking for a composition. Found three.",
+      "spot": "bowness-park",
+      "event": "",
+      "date": "2026-08-11",
+      "likes": 71
+    },
+    {
+      "owner": "sam",
+      "kind": "artwork",
+      "scene": "skyline",
+      "title": "Bow Tower at 4:40pm",
+      "medium": "Brush pen and marker",
+      "caption": "Twelve minutes, standing up, one pen. The deadline is the point.",
+      "spot": "crescent-heights",
+      "event": "skyline-sketch-social",
+      "date": "2026-11-04",
+      "likes": 203
+    },
+    {
+      "owner": "sam",
+      "kind": "moment",
+      "scene": "paintout",
+      "title": "Sketch social, November",
+      "medium": "",
+      "caption": "Nine of us on the railing. Two had never drawn a building before.",
+      "spot": "crescent-heights",
+      "event": "skyline-sketch-social",
+      "date": "2026-10-29",
+      "likes": 88
+    },
+    {
+      "owner": "sam",
+      "kind": "artwork",
+      "scene": "prairie",
+      "title": "Nose Hill, three bands",
+      "medium": "Ink, digital colour",
+      "caption": "Grass, hill, sky. I keep trying to make it simpler than that and failing.",
+      "spot": "nose-hill",
+      "event": "",
+      "date": "2026-10-03",
+      "likes": 129
+    },
+    {
+      "owner": "sam",
+      "kind": "artwork",
+      "scene": "rockies",
+      "title": "Frank Slide",
+      "medium": "Ink on toned paper",
+      "caption": "Hard to draw somewhere that is also a grave. Took my time with this one.",
+      "spot": "frank-slide",
+      "event": "",
+      "date": "2026-09-07",
+      "likes": 164
+    },
+    {
+      "owner": "jamie",
+      "kind": "artwork",
+      "scene": "creek",
+      "title": "Quiet morning, bridge four",
+      "medium": "Watercolour, A5",
+      "caption": "Two hours, nobody spoke, perfect.",
+      "spot": "fish-creek",
+      "event": "quiet-morning-quick-sketches",
+      "date": "2026-11-01",
+      "likes": 44
+    },
+    {
+      "owner": "jamie",
+      "kind": "artwork",
+      "scene": "woods",
+      "title": "Inglewood, dappled",
+      "medium": "Pencil",
+      "caption": "Light through poplars is almost impossible and I will keep trying.",
+      "spot": "inglewood-sanctuary",
+      "event": "",
+      "date": "2026-10-12",
+      "likes": 38
+    },
+    {
+      "owner": "jamie",
+      "kind": "moment",
+      "scene": "palette",
+      "title": "Travel kit, finally sorted",
+      "medium": "",
+      "caption": "Twelve pans, one brush, fits in a coat pocket.",
+      "spot": "",
+      "event": "",
+      "date": "2026-09-21",
+      "likes": 29
+    },
+    {
+      "owner": "priya",
+      "kind": "artwork",
+      "scene": "woods",
+      "title": "Elk Island, aspen study",
+      "medium": "Ink and watercolour",
+      "caption": "Stood very still for a long time. The bison moved on eventually.",
+      "spot": "elk-island",
+      "event": "",
+      "date": "2026-10-20",
+      "likes": 51
+    },
+    {
+      "owner": "priya",
+      "kind": "artwork",
+      "scene": "meadow",
+      "title": "River valley, early",
+      "medium": "Ink",
+      "caption": "Edmonton does mornings better than anyone gives it credit for.",
+      "spot": "river-valley",
+      "event": "",
+      "date": "2026-09-30",
+      "likes": 47
+    },
+    {
+      "owner": "priya",
+      "kind": "moment",
+      "scene": "paintout",
+      "title": "Woodland ink walk, test run",
+      "medium": "",
+      "caption": "Five stops, ten minutes each, no erasing. Harder than it sounds.",
+      "spot": "inglewood-sanctuary",
+      "event": "woodland-ink-walk",
+      "date": "2026-09-08",
+      "likes": 33
+    }
+  ]
+}

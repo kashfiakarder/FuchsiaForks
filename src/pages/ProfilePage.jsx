@@ -25,8 +25,6 @@ import GalleryPostDialog from '@/components/profile/GalleryPostDialog';
 import AddArtworkDialog from '@/components/profile/AddArtworkDialog';
 import ProfileSettingsDialog from '@/components/profile/ProfileSettingsDialog';
 import NotFoundPage from './NotFoundPage';
-import { CURRENT_USER } from '@/data/mockData';
-import { GALLERY } from '@/data/gallery';
 import { formatLongDate } from '@/data/format';
 import { useAppState } from '@/state/AppState';
 import { BRAND, RADIUS, cardSx, tintSx } from '@/theme';
@@ -53,10 +51,10 @@ function Stat({ value, label }) {
  */
 export default function ProfilePage({ own = false }) {
   const { userId } = useParams();
-  const { user, getProfile, canViewGallery, galleryFor, allEvents, joinedEventIds, isHosting } =
+  const { user, getProfile, canViewGallery, galleryFor, galleryCount, allEvents, joinedEventIds, isHosting } =
     useAppState();
 
-  const id = own ? CURRENT_USER.id : userId;
+  const id = own ? user?.id : userId;
   const person = getProfile(id);
 
   const [tab, setTab] = useState('gallery');
@@ -84,7 +82,7 @@ export default function ProfilePage({ own = false }) {
   // The count is the profile's own fact, so it is shown even when the
   // contents are not. It must come from the seed data, not the filtered
   // list, or a private gallery would always report zero.
-  const hiddenCount = (GALLERY[id] ?? []).length;
+  const hiddenCount = galleryCount(id);
 
   return (
     <>

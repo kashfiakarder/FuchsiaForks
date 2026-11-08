@@ -8,8 +8,8 @@ import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded
 import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined';
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
 
-import SceneImage from '@/components/common/SceneImage';
-import { getSpot } from '@/data/mockData';
+import GalleryImage from '@/components/profile/GalleryImage';
+import { useAppState } from '@/state/AppState';
 import { BRAND, RADIUS, cardSx } from '@/theme';
 
 /**
@@ -20,6 +20,7 @@ import { BRAND, RADIUS, cardSx } from '@/theme';
  * because the same illustration engine draws both.
  */
 function GalleryTile({ post, onOpen }) {
+  const { getSpot } = useAppState();
   const spot = post.spotId ? getSpot(post.spotId) : null;
   const isArtwork = post.kind === 'artwork';
 
@@ -47,8 +48,8 @@ function GalleryTile({ post, onOpen }) {
       }}
     >
       <Box sx={{ position: 'relative', p: isArtwork ? 1.25 : 0, bgcolor: isArtwork ? '#EFEAE0' : 'transparent' }}>
-        <SceneImage
-          variant={post.scene}
+        <GalleryImage
+          post={post}
           ratio="4 / 3"
           radius={isArtwork ? 2 : 0}
           sx={isArtwork ? { border: '1px solid rgba(18,18,20,.14)' } : undefined}

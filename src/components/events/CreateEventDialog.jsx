@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -14,7 +14,6 @@ import Typography from '@mui/material/Typography';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 import SceneImage from '@/components/common/SceneImage';
-import { SPOTS, getSpot } from '@/data/mockData';
 import { useAppState } from '@/state/AppState';
 import { RADIUS } from '@/theme';
 
@@ -28,17 +27,19 @@ function tomorrow() {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
-const EMPTY = {
-  title: '',
-  spotId: SPOTS[0].id,
-  date: tomorrow(),
-  startTime: '10:00',
-  endTime: '12:30',
-  meetingPoint: '',
-  badge: BADGES[0],
-  skillNote: SKILL[0],
-  description: '',
-};
+function emptyDraft(spotId) {
+  return {
+    title: '',
+    spotId: spotId || '',
+    date: tomorrow(),
+    startTime: '10:00',
+    endTime: '12:30',
+    meetingPoint: '',
+    badge: BADGES[0],
+    skillNote: SKILL[0],
+    description: '',
+  };
+}
 
 /**
  * Create a paint-out.
@@ -49,28 +50,37 @@ const EMPTY = {
  * created is to put a wall of required fields in front of someone.
  */
 export default function CreateEventDialog({ open, onClose }) {
-  const { createEvent } = useAppState();
+  const { createEvent, spots, getSpot } = useAppState();
   const navigate = useNavigate();
-  const [values, setValues] = useState(EMPTY);
+  const [values, setValues] = useState(() => emptyDraft());
   const [errors, setErrors] = useState({});
 
-  const spot = useMemo(() => getSpot(values.spotId), [values.spotId]);
+  useEffect(() => {
+    if (open) {
+      setValues(emptyDraft(spots[0]?.id));
+      setErrors({});
+    }
+  }, [open, spots]);
+
+  const spot = useMemo(() => getSpot(values.spotId), [getSpot, values.spotId]);
   const set = (name) => (event) => {
     const { value } = event.target;
     setValues((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => (prev[name] ? { ...prev, [name]: undefined } : prev));
   };
 
-  const submit = () => {
+  const submit = async () => {
     const found = {};
     if (!values.title.trim()) found.title = 'Give your paint-out a name.';
     if (values.endTime <= values.startTime) found.endTime = 'End time must be after the start.';
+    if (!values.spotId) found.spotId = 'Pick a painting spot.';
     if (Object.keys(found).length) {
       setErrors(found);
       return;
     }
-    const created = createEvent(values);
-    setValues(EMPTY);
+    const created = await createEvent(values);
+    if (!created) return;
+    setValues(emptyDraft(spots[0]?.id));
     setErrors({});
     onClose();
     navigate(`/events/${created.id}`);
@@ -106,13 +116,14 @@ export default function CreateEventDialog({ open, onClose }) {
           />
 
           <TextField select label="Painting spot" value={values.spotId} onChange={set('spotId')} fullWidth>
-            {SPOTS.map((s) => (
+            {spots.map((s) => (
               <MenuItem key={s.id} value={s.id}>
                 {s.name} — {s.region}
               </MenuItem>
             ))}
           </TextField>
 
+          {spot ? (
           <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
             <SceneImage variant={spot.scene} sx={{ width: 76, height: 56 }} radius={RADIUS.sm} />
             <Box>
@@ -122,6 +133,7 @@ export default function CreateEventDialog({ open, onClose }) {
               </Typography>
             </Box>
           </Stack>
+          ) : null}
 
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5}>
             <TextField
@@ -156,7 +168,7 @@ export default function CreateEventDialog({ open, onClose }) {
             label="Where exactly to meet"
             value={values.meetingPoint}
             onChange={set('meetingPoint')}
-            placeholder={spot.address}
+            placeholder={spot?.address || 'The spot’s address'}
             helperText="Leave blank to use the spot's address."
             fullWidth
           />

@@ -14,8 +14,8 @@ import { Link as RouterLink } from 'react-router-dom';
 
 import SceneImage from '@/components/common/SceneImage';
 import { AttendeeStack } from '@/components/common/PersonAvatar';
-import { PEOPLE, getSpot } from '@/data/mockData';
 import { formatDayNumber, formatMonthAbbr, formatTimeRange, formatWeekdayDate } from '@/data/format';
+import { useAppState } from '@/state/AppState';
 import { BRAND, RADIUS, cardSx } from '@/theme';
 
 /**
@@ -27,8 +27,10 @@ import { BRAND, RADIUS, cardSx } from '@/theme';
  * "NOV 14" twice.
  */
 export default function EventCard({ event, status, showActions = true, compact = false }) {
+  const { getSpot, getProfile } = useAppState();
   const spot = getSpot(event.spotId);
-  const host = PEOPLE[event.hostId];
+  const host = getProfile(event.hostId);
+  if (!spot) return null;
   const hosting = status === 'Hosting';
 
   return (

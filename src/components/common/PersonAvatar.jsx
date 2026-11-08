@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { Link as RouterLink } from 'react-router-dom';
-import { ATTENDEE_SAMPLE, CURRENT_USER, PEOPLE } from '@/data/mockData';
+import { useAppState } from '@/state/AppState';
 
 /**
  * A person's initials on their own pastel tint.
@@ -14,7 +14,8 @@ import { ATTENDEE_SAMPLE, CURRENT_USER, PEOPLE } from '@/data/mockData';
  * front of stakeholders.
  */
 export function PersonAvatar({ personId, size = 32, person }) {
-  const p = person ?? PEOPLE[personId];
+  const { getProfile } = useAppState();
+  const p = person ?? getProfile(personId);
   if (!p) return null;
   return (
     <Avatar
@@ -40,7 +41,10 @@ export function PersonAvatar({ personId, size = 32, person }) {
  * the people at an event rather than decoration. The tooltip carries the
  * name, since initials alone identify nobody.
  */
-export function AttendeeStack({ count, size = 30, ids = ATTENDEE_SAMPLE, label = 'artists going' }) {
+export function AttendeeStack({ count, size = 30, ids, label = 'artists going' }) {
+  const { people, user } = useAppState();
+  const stackIds = ids ?? people.filter((person) => person.id !== user?.id).slice(0, 4).map((person) => person.id);
+
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25 }}>
       <AvatarGroup
@@ -56,9 +60,9 @@ export function AttendeeStack({ count, size = 30, ids = ATTENDEE_SAMPLE, label =
           },
         }}
       >
-        {ids.map((id) => {
-          const person = PEOPLE[id];
-          const isMe = id === CURRENT_USER.id;
+        {stackIds.map((id) => {
+          const person = people.find((row) => row.id === id);
+          const isMe = id === user?.id;
           const to = isMe ? '/profile' : `/artists/${id}`;
           return (
             <Tooltip key={id} title={isMe ? 'You' : (person?.name ?? '')}>

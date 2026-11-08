@@ -4,15 +4,14 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Link as RouterLink } from 'react-router-dom';
 
 import { PersonAvatar } from './PersonAvatar';
-import { CURRENT_USER } from '@/data/mockData';
 import { useAppState } from '@/state/AppState';
 
 /**
  * Route to a person's profile. The signed-in user gets their own page
  * rather than a read-only view of themselves.
  */
-export function profilePath(userId) {
-  return userId === CURRENT_USER.id ? '/profile' : `/artists/${userId}`;
+export function profilePath(userId, meId) {
+  return meId && String(userId) === String(meId) ? '/profile' : `/artists/${userId}`;
 }
 
 /**
@@ -33,17 +32,17 @@ export default function PersonLink({
   suffix,
   sx,
 }) {
-  const { getProfile } = useAppState();
+  const { getProfile, user } = useAppState();
   const person = getProfile(personId);
   if (!person) return null;
 
-  const isMe = personId === CURRENT_USER.id;
+  const isMe = personId === user?.id;
   const isPrivate = person.visibility === 'private';
 
   return (
     <Box
       component={RouterLink}
-      to={profilePath(personId)}
+      to={profilePath(personId, user?.id)}
       aria-label={`${isMe ? 'Your' : `${person.name}'s`} profile${isPrivate ? ' (private)' : ''}`}
       sx={{
         display: 'inline-flex',
