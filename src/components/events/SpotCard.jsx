@@ -38,7 +38,7 @@ export default function SpotCard({ spot, active = false }) {
       }}
     >
       <Box sx={{ position: 'relative' }}>
-        <SceneImage variant={spot.scene} height={168} />
+        <SceneImage variant={spot.scene} spotId={spot.id} height={168} />
         <Chip
           label={spot.tagline}
           size="small"

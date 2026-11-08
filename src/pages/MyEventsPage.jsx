@@ -170,6 +170,7 @@ export default function MyEventsPage() {
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 2 }}>
                   <SceneImage
                     variant={event.scene}
+                    spotId={event.spotId}
                     sx={{ width: 76, height: 56, flexShrink: 0 }}
                     radius={RADIUS.sm}
                   />

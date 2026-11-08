@@ -65,6 +65,7 @@ export default function EventDetailPage() {
           <Box sx={{ position: 'relative' }}>
             <SceneImage
               variant={event.scene}
+              spotId={event.spotId}
               height={{ xs: 220, sm: 300, md: 360 }}
               radius={RADIUS.lg}
               title={`Artists painting at ${spot.name}`}

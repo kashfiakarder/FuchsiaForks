@@ -1,6 +1,38 @@
 import { useId, useMemo } from 'react';
 import Box from '@mui/material/Box';
 
+import abrahamLake from '@/assets/spots/abraham-lake.jpg';
+import athabascaFalls from '@/assets/spots/athabasca-falls.jpg';
+import bownessPark from '@/assets/spots/bowness-park.jpg';
+import crescentHeights from '@/assets/spots/crescent-heights.jpg';
+import cypressHills from '@/assets/spots/cypress-hills.jpg';
+import dinosaurPark from '@/assets/spots/dinosaur-park.jpg';
+import dryIsland from '@/assets/spots/dry-island.jpg';
+import elkIsland from '@/assets/spots/elk-island.jpg';
+import fishCreek from '@/assets/spots/fish-creek.jpg';
+import frankSlide from '@/assets/spots/frank-slide.jpg';
+import headSmashedIn from '@/assets/spots/head-smashed-in.jpg';
+import horseshoeCanyon from '@/assets/spots/horseshoe-canyon.jpg';
+import inglewoodSanctuary from '@/assets/spots/inglewood-sanctuary.jpg';
+import lacLaBiche from '@/assets/spots/lac-la-biche.jpg';
+import lakeLouise from '@/assets/spots/lake-louise.jpg';
+import lesserSlaveLake from '@/assets/spots/lesser-slave-lake.jpg';
+import maligneLake from '@/assets/spots/maligne-lake.jpg';
+import moraineLake from '@/assets/spots/moraine-lake.jpg';
+import noseHill from '@/assets/spots/nose-hill.jpg';
+import northGlenmore from '@/assets/spots/north-glenmore.jpg';
+import peaceRiverLookout from '@/assets/spots/peace-river-lookout.jpg';
+import peytoLake from '@/assets/spots/peyto-lake.jpg';
+import policemansCreek from '@/assets/spots/policemans-creek.jpg';
+import pyramidLake from '@/assets/spots/pyramid-lake.jpg';
+import riverValley from '@/assets/spots/river-valley.jpg';
+import sylvanLake from '@/assets/spots/sylvan-lake.jpg';
+import twoJackLake from '@/assets/spots/two-jack-lake.jpg';
+import upperKananaskis from '@/assets/spots/upper-kananaskis.jpg';
+import vermilionLakes from '@/assets/spots/vermilion-lakes.jpg';
+import watertonTownsite from '@/assets/spots/waterton-townsite.jpg';
+import writingOnStone from '@/assets/spots/writing-on-stone.jpg';
+
 /**
  * Procedurally drawn landscape illustrations.
  *
@@ -54,6 +86,41 @@ function ridged(x, seed, octaves = 4) {
 
 const W = 1000;
 const H = 700;
+
+
+const SPOT_IMAGES = {
+  'abraham-lake': abrahamLake,
+  'athabasca-falls': athabascaFalls,
+  'bowness-park': bownessPark,
+  'crescent-heights': crescentHeights,
+  'cypress-hills': cypressHills,
+  'dinosaur-park': dinosaurPark,
+  'dry-island': dryIsland,
+  'elk-island': elkIsland,
+  'fish-creek': fishCreek,
+  'frank-slide': frankSlide,
+  'head-smashed-in': headSmashedIn,
+  'horseshoe-canyon': horseshoeCanyon,
+  'inglewood-sanctuary': inglewoodSanctuary,
+  'lac-la-biche': lacLaBiche,
+  'lake-louise': lakeLouise,
+  'lesser-slave-lake': lesserSlaveLake,
+  'maligne-lake': maligneLake,
+  'moraine-lake': moraineLake,
+  'nose-hill': noseHill,
+  'north-glenmore': northGlenmore,
+  'peace-river-lookout': peaceRiverLookout,
+  'peyto-lake': peytoLake,
+  'policemans-creek': policemansCreek,
+  'pyramid-lake': pyramidLake,
+  'river-valley': riverValley,
+  'sylvan-lake': sylvanLake,
+  'two-jack-lake': twoJackLake,
+  'upper-kananaskis': upperKananaskis,
+  'vermilion-lakes': vermilionLakes,
+  'waterton-townsite': watertonTownsite,
+  'writing-on-stone': writingOnStone,
+};
 
 /** A closed path running along a ridgeline and down to the bottom edge. */
 function ridgePath(seed, baseline, amplitude, frequency, samples = 110) {
@@ -212,6 +279,7 @@ function PaletteArt({ gradId }) {
 
 export default function SceneImage({
   variant = 'creek',
+  spotId,
   title,
   ratio,
   height,
@@ -250,6 +318,7 @@ export default function SceneImage({
   const grainId = `grain-${uid}`;
 
   const labelled = Boolean(title);
+  const imageSrc = SPOT_IMAGES[spotId];
 
   const svg =
     variant === 'palette' ? (
@@ -434,11 +503,20 @@ export default function SceneImage({
         lineHeight: 0,
         ...(height ? { height } : null),
         ...(ratio ? { aspectRatio: ratio } : null),
-        '& svg': { display: 'block', width: '100%', height: '100%' },
+        '& svg, & img': { display: 'block', width: '100%', height: '100%' },
         ...sx,
       }}
     >
-      {svg}
+      {imageSrc ? (
+        <Box
+          component="img"
+          src={imageSrc}
+          alt={title || ''}
+          sx={{ objectFit: 'cover' }}
+        />
+      ) : (
+        svg
+      )}
     </Box>
   );
 }
