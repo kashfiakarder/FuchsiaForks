@@ -36,7 +36,7 @@ export default function EventCard({ event, status, showActions = true, compact =
   return (
     <Paper component="article" sx={{ ...cardSx, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
       <Box sx={{ position: 'relative' }}>
-        <SceneImage variant={event.scene} height={compact ? 150 : 196} />
+        <SceneImage variant={event.scene} spotId={event.spotId} height={compact ? 150 : 196} />
 
         <Box
           aria-hidden="true"

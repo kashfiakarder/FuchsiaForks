@@ -125,7 +125,7 @@ export default function CreateEventDialog({ open, onClose }) {
 
           {spot ? (
           <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
-            <SceneImage variant={spot.scene} sx={{ width: 76, height: 56 }} radius={RADIUS.sm} />
+            <SceneImage variant={spot.scene} spotId={spot.id} sx={{ width: 76, height: 56 }} radius={RADIUS.sm} />
             <Box>
               <Typography variant="subtitle2">{spot.name}</Typography>
               <Typography variant="caption" color="text.secondary">
