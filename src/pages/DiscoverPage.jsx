@@ -12,8 +12,10 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { Link as RouterLink, useSearchParams } from 'react-router-dom';
 
 import EventCard from '@/components/events/EventCard';
+import RouteCard from '@/components/events/RouteCard';
 import SpotCard from '@/components/events/SpotCard';
 import ArtistCard from '@/components/profile/ArtistCard';
+import { stopsFor } from '@/lib/routes';
 
 /**
  * OpenLayers is a third of a megabyte. Loading it lazily means the rest of
@@ -21,6 +23,7 @@ import ArtistCard from '@/components/profile/ArtistCard';
  * while the map is still arriving, and it never blocks first paint.
  */
 const AlbertaMap = lazy(() => import('@/components/map/AlbertaMap'));
+import { matchesAny } from '@/lib/fuzzy';
 import { useAppState } from '@/state/AppState';
 import { cardSx } from '@/theme';
 
@@ -48,7 +51,7 @@ const GRID_PAGE = 12;
  * rhythm as the screens that were specified.
  */
 export default function DiscoverPage() {
-  const { user, isJoined, isHosting, allEvents, spots: allSpots, people } = useAppState();
+  const { user, isJoined, isHosting, allEvents, spots: allSpots, people, routes: allRoutes } = useAppState();
   // Seeded from the header's search box, which navigates here with ?q=.
   const [searchParams, setSearchParams] = useSearchParams();
   const [query, setQuery] = useState(() => searchParams.get('q') ?? '');
@@ -59,15 +62,9 @@ export default function DiscoverPage() {
   const [showAll, setShowAll] = useState(false);
 
   const spots = useMemo(() => {
-    const q = query.trim().toLowerCase();
     return allSpots.filter((spot) => {
       const byRegion = filter === 'All of Alberta' || spot.region === filter;
-      const byQuery =
-        !q ||
-        spot.name.toLowerCase().includes(q) ||
-        spot.tagline.toLowerCase().includes(q) ||
-        spot.city.toLowerCase().includes(q) ||
-        spot.address.toLowerCase().includes(q);
+      const byQuery = matchesAny(query, [spot.name, spot.tagline, spot.city, spot.address]);
       return byRegion && byQuery;
     });
   }, [query, filter, allSpots]);
@@ -86,21 +83,32 @@ export default function DiscoverPage() {
   // The artist directory. Private profiles are listed too — the person is
   // not hidden, only their gallery is.
   const artists = useMemo(() => {
-    const q = query.trim().toLowerCase();
     return people.filter(
       (p) =>
         p.id !== user?.id &&
-        (!q ||
-          p.name.toLowerCase().includes(q) ||
-          p.handle.toLowerCase().includes(q) ||
-          (p.mediums ?? []).some((m) => m.toLowerCase().includes(q))),
+        matchesAny(query, [p.name, p.handle, ...(p.mediums ?? [])]),
     );
   }, [query, people, user]);
 
   const events = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    return allEvents.filter((e) => !q || e.title.toLowerCase().includes(q)).slice(0, 3);
+    return allEvents.filter((e) => matchesAny(query, [e.title])).slice(0, 3);
   }, [allEvents, query]);
+
+  const routes = useMemo(() => {
+    return allRoutes.filter((route) => {
+      const routeSpots = stopsFor(route)
+        .map((stop) => allSpots.find((spot) => spot.id === stop.spotId))
+        .filter(Boolean);
+      const byRegion =
+        filter === 'All of Alberta' || routeSpots.some((spot) => spot.region === filter);
+      const byQuery = matchesAny(query, [
+        route.name,
+        route.description,
+        ...routeSpots.flatMap((spot) => [spot.name, spot.city]),
+      ]);
+      return byRegion && byQuery;
+    });
+  }, [allRoutes, allSpots, query, filter]);
 
   return (
     <>
@@ -112,7 +120,7 @@ export default function DiscoverPage() {
           Find your next view, {user?.firstName || 'there'}.
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
-          Painting spots across Alberta, and the people already out there making work.
+          Painting spots, shared routes, and the people already out there making work.
         </Typography>
       </Box>
 
@@ -128,10 +136,10 @@ export default function DiscoverPage() {
             // Keep the URL shareable without stacking history entries.
             setSearchParams(e.target.value ? { q: e.target.value } : {}, { replace: true });
           }}
-          placeholder="Search spots by name or feel"
+          placeholder="Search spots, routes, or people"
           sx={{ maxWidth: { sm: 340 }, width: '100%' }}
           slotProps={{
-            htmlInput: { 'aria-label': 'Search painting spots' },
+            htmlInput: { 'aria-label': 'Search spots, routes, or people' },
             input: {
               startAdornment: (
                 <InputAdornment position="start">
@@ -245,6 +253,59 @@ export default function DiscoverPage() {
           </Button>
         </Box>
       ) : null}
+
+      <Box
+        sx={{
+          mt: 5,
+          mb: 2,
+          display: 'flex',
+          alignItems: 'baseline',
+          justifyContent: 'space-between',
+          gap: 2,
+        }}
+      >
+        <Typography variant="h3" component="h2">
+          {filter === 'All of Alberta' ? 'Painting routes' : `Routes through ${filter}`}
+        </Typography>
+        <Button component={RouterLink} to="/routes" size="small">
+          Plan a route
+        </Button>
+      </Box>
+      <Typography variant="body2" color="text.secondary" sx={{ mb: 2, mt: -1 }}>
+        Join a walk and it shows up on your profile, where anyone can see you’re going.
+      </Typography>
+
+      {routes.length ? (
+        <Box
+          sx={{
+            display: 'grid',
+            gap: 2.5,
+            gridTemplateColumns: {
+              xs: '1fr',
+              sm: 'repeat(2, minmax(0, 1fr))',
+              lg: 'repeat(3, minmax(0, 1fr))',
+            },
+          }}
+        >
+          {routes.map((route) => (
+            <RouteCard key={route.id} route={route} />
+          ))}
+        </Box>
+      ) : (
+        <Paper sx={{ ...cardSx, p: 5, textAlign: 'center' }}>
+          <Typography variant="h4">
+            {allRoutes.length ? 'No routes match that' : 'No routes yet'}
+          </Typography>
+          <Typography color="text.secondary" sx={{ mt: 1, mb: 2.5 }}>
+            {allRoutes.length
+              ? 'Try a different word, or clear the filter.'
+              : 'Plan a walk between painting spots and other artists can join you.'}
+          </Typography>
+          <Button component={RouterLink} to="/routes" variant="contained">
+            Plan a route
+          </Button>
+        </Paper>
+      )}
 
       {artists.length ? (
         <>

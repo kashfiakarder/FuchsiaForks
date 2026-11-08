@@ -66,7 +66,7 @@ export default function SpotDetailPage() {
       <Box sx={{ position: 'relative' }}>
         <SceneImage
           variant={spot.scene}
-          spotId={spot.id}
+          slug={spot.slug}
           height={{ xs: 200, sm: 280, md: 330 }}
           radius={RADIUS.lg}
           title={`The view at ${spot.name}`}

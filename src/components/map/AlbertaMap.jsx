@@ -572,7 +572,7 @@ export default function AlbertaMap({ spots, activeSpotId, onHoverSpot, onSelectS
                 >
                   <SceneImage
                     variant={spot.scene}
-                    spotId={spot.id}
+                    slug={spot.slug}
                     sx={{ width: 52, height: 42, flexShrink: 0 }}
                     radius={RADIUS.sm}
                   />

@@ -70,6 +70,21 @@ class RouteInvite(models.Model):
     def __str__(self):
         return f"{self.invitee} -> {self.route} [{self.status}]"
 
+    @property
+    def confirmed(self):
+        return self.status == self.Status.ACCEPTED and hasattr(self, "photo")
+
+
+class RouteJoinPhoto(models.Model):
+    """The picture that confirms someone actually joined the route."""
+
+    invite = models.OneToOneField(RouteInvite, on_delete=models.CASCADE, related_name="photo")
+    image = models.ImageField(upload_to="route_joins/")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Photo for {self.invite}"
+
 
 class RouteStop(models.Model):
     """One step in a route. `order` is 1, 2, 3... along the route."""

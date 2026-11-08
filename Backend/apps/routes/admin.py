@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import ChatMessage, ChatRoom, Route, RouteInvite, RouteStop
+from .models import ChatMessage, ChatRoom, Route, RouteInvite, RouteJoinPhoto, RouteStop
 
 
 class RouteStopInline(admin.TabularInline):
@@ -18,6 +18,11 @@ class RouteAdmin(admin.ModelAdmin):
 @admin.register(RouteInvite)
 class RouteInviteAdmin(admin.ModelAdmin):
     list_display = ("route", "invitee", "status", "invited_at")
+
+
+@admin.register(RouteJoinPhoto)
+class RouteJoinPhotoAdmin(admin.ModelAdmin):
+    list_display = ("invite", "created_at")
 
 
 @admin.register(ChatRoom)

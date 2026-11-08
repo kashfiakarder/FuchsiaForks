@@ -6,10 +6,12 @@ from pathlib import Path
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 from django.db import transaction
+from django.db.models import Q
+from django.utils import timezone
 
-from apps.events.models import Event, EventMessage, GalleryPost
+from apps.events.models import Event, EventMessage, GalleryPost, Invitation
 from apps.present import parse_wall_clock
-from apps.routes.models import ChatRoom, Route, RouteStop
+from apps.routes.models import ChatRoom, Route, RouteInvite, RouteStop
 from apps.spots.models import Review, Spot
 from apps.users.models import Profile
 
@@ -22,6 +24,92 @@ CALGARY_ROUTE_STOPS = (
 
 User = get_user_model()
 FIXTURE = Path(__file__).resolve().parents[4] / "fixtures" / "demo.json"
+
+# Routes other people planned. Hanz has not joined, so Join is available on his account.
+OPEN_ROUTES = (
+    {
+        "name": "Rockies colour loop",
+        "description": "Louise, Moraine, then the Peyto overlook. A long day of cold colour.",
+        "stops": ("lake-louise", "moraine-lake", "peyto-lake"),
+        "owner": "priya",
+        "joined": ("alex",),
+    },
+    {
+        "name": "Badlands pigment trail",
+        "description": "Three stops of ochre, hoodoos, and a very wide sky.",
+        "stops": ("horseshoe-canyon", "writing-on-stone", "dinosaur-park"),
+        "owner": "sam",
+        "joined": ("priya", "maya"),
+    },
+    {
+        "name": "Foothills watercolour walk",
+        "description": "Canmore creek, then two lakes. Bring a board that can take wind.",
+        "stops": ("policemans-creek", "upper-kananaskis", "waterton-townsite"),
+        "owner": "alex",
+        "joined": ("jamie",),
+    },
+)
+
+# Routes on Hanz's profile. He planned them, so anyone else can join.
+HANZ_ROUTES = (
+    {
+        "name": "Bow valley sketch loop",
+        "description": "Skyline first, then the sanctuary, and down to the creek.",
+        "stops": ("crescent-heights", "inglewood-sanctuary", "fish-creek"),
+        "joined": ("maya", "sam"),
+    },
+    {
+        "name": "Reservoir to the hill",
+        "description": "Water, a park lagoon, then the prairie on Nose Hill.",
+        "stops": ("north-glenmore", "bowness-park", "nose-hill"),
+        "joined": ("alex",),
+    },
+    {
+        "name": "Canmore to the lakes",
+        "description": "Start in town and finish above the water. One day, three views.",
+        "stops": ("policemans-creek", "upper-kananaskis", "lake-louise"),
+        "joined": ("priya", "jamie"),
+    },
+)
+
+HANZ_PAST_EVENTS = (
+    {
+        "slug": "hanz-past-nose-hill",
+        "title": "Dusk Studies on Nose Hill",
+        "spot": "nose-hill",
+        "start": "2026-10-18T16:30:00-06:00",
+        "end": "2026-10-18T18:30:00-06:00",
+        "scene": "prairie",
+        "headline": "The grass went gold and then grey.",
+        "description": "A short evening on the hill. We chased the last warm light, then stayed for the blue.",
+        "meetingPoint": "North parking lot, Nose Hill Park",
+        "attendees": 9,
+    },
+    {
+        "slug": "hanz-past-glenmore",
+        "title": "Wind Sketches at Glenmore",
+        "spot": "north-glenmore",
+        "start": "2026-10-04T13:00:00-06:00",
+        "end": "2026-10-04T15:30:00-06:00",
+        "scene": "reservoir",
+        "headline": "Fast studies before the wind took the paper.",
+        "description": "Small panels, big water. We worked in short bursts and compared what the light did to the reservoir.",
+        "meetingPoint": "Sailing school parking lot",
+        "attendees": 12,
+    },
+    {
+        "slug": "hanz-past-inglewood",
+        "title": "Morning Wash at Inglewood",
+        "spot": "inglewood-sanctuary",
+        "start": "2026-09-20T09:30:00-06:00",
+        "end": "2026-09-20T12:00:00-06:00",
+        "scene": "woods",
+        "headline": "Quiet water and a slow first wash.",
+        "description": "Met at the sanctuary gate and painted the river edge before the path got busy.",
+        "meetingPoint": "Sanctuary entrance gate",
+        "attendees": 7,
+    },
+)
 
 
 class Command(BaseCommand):
@@ -91,11 +179,14 @@ class Command(BaseCommand):
             )
             post_count += 1
 
+        hanz_routes, hanz_events = self._hanz_account(people, spots)
+
         self.stdout.write(
             self.style.SUCCESS(
-                f"Seeded {len(people)} people, {len(spots)} spots, {1 if route else 0} routes, "
-                f"{len(events)} events, {review_count} reviews, {message_count} messages, "
-                f"{post_count} gallery posts."
+                f"Seeded {len(people)} people, {len(spots)} spots, "
+                f"{(1 if route else 0) + hanz_routes} routes, "
+                f"{len(events) + hanz_events} events, {review_count} reviews, "
+                f"{message_count} messages, {post_count} gallery posts."
             )
         )
 
@@ -174,6 +265,107 @@ class Command(BaseCommand):
             ]
         )
         ChatRoom.objects.get_or_create(route=route)
+        return route
+
+    def _hanz_account(self, people, spots):
+        """Routes Hanz can join, routes he planned, and past paint-outs on his account."""
+        hanz = (
+            User.objects.filter(
+                Q(profile__display_name__iexact="Hanz Dela Cruz")
+                | Q(profile__display_name__iexact="Hanz De La Cruz")
+                | Q(first_name__iexact="Hanz", last_name__iexact="Dela Cruz")
+                | Q(first_name__iexact="Hanz", last_name__iexact="De La Cruz")
+            )
+            .distinct()
+            .first()
+        )
+        if hanz is None:
+            self.stdout.write("Hanz Dela Cruz has not signed in yet — skipping his demo routes and past events.")
+            return 0, 0
+
+        owners = {**people, "hanz": hanz}
+        route_count = 0
+        for row in (*OPEN_ROUTES, *({**row, "owner": "hanz"} for row in HANZ_ROUTES)):
+            if self._named_route(row, owners, spots, hanz):
+                route_count += 1
+
+        event_count = 0
+        for row in HANZ_PAST_EVENTS:
+            spot = spots.get(row["spot"])
+            if spot is None:
+                continue
+            event, _created = Event.objects.update_or_create(
+                slug=row["slug"],
+                defaults={
+                    "spot": spot,
+                    "route": None,
+                    "host": hanz,
+                    "title": row["title"],
+                    "description": row["description"],
+                    "start_time": parse_wall_clock(row["start"]),
+                    "start_local": row["start"],
+                    "end_local": row["end"],
+                    "badge": "Past paint-out",
+                    "meeting_point": row["meetingPoint"],
+                    "skill_note": "All skill levels welcome",
+                    "scene": row["scene"],
+                    "headline": row["headline"],
+                    "kit_title": "Bring your outdoor kit",
+                    "kit_body": "Whatever you like to work with, plus layers.",
+                    "weather_title": "Check the forecast",
+                    "weather_body": "Alberta weather turns fast.",
+                    "gallery_scenes": [row["scene"], "palette", "meadow"],
+                    "timezone_label": "Mountain Standard Time",
+                    "listed_attendees": row["attendees"],
+                    "pinned_message": "",
+                    "is_past": True,
+                },
+            )
+            Invitation.objects.update_or_create(
+                event=event,
+                invitee=hanz,
+                defaults={
+                    "invited_by": hanz,
+                    "status": Invitation.Status.ACCEPTED,
+                    "responded_at": timezone.now(),
+                },
+            )
+            event_count += 1
+        return route_count, event_count
+
+    def _named_route(self, row, owners, spots, hanz):
+        ordered = [spots[slug] for slug in row["stops"] if slug in spots]
+        owner = owners.get(row["owner"])
+        if owner is None or len(ordered) < 2:
+            self.stderr.write(f"Skipping route {row['name']}")
+            return None
+        route, _created = Route.objects.update_or_create(
+            name=row["name"],
+            defaults={"description": row["description"], "created_by": owner},
+        )
+        route.stops.all().delete()
+        RouteStop.objects.bulk_create(
+            [
+                RouteStop(route=route, spot=spot, order=index)
+                for index, spot in enumerate(ordered, start=1)
+            ]
+        )
+        ChatRoom.objects.get_or_create(route=route)
+        # Hanz is not invited onto these. Routes he did not plan stay joinable
+        # on his account. Routes he planned already count him as the host.
+        for slug in row.get("joined") or ():
+            person = owners.get(slug)
+            if person is None or person.id in (owner.id, hanz.id):
+                continue
+            RouteInvite.objects.update_or_create(
+                route=route,
+                invitee=person,
+                defaults={
+                    "invited_by": owner,
+                    "status": RouteInvite.Status.ACCEPTED,
+                    "responded_at": timezone.now(),
+                },
+            )
         return route
 
     def _event(self, row, people, spots):

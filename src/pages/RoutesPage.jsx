@@ -1,5 +1,5 @@
-import { Suspense, lazy, useMemo, useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Suspense, lazy, useEffect, useMemo, useState } from 'react';
+import { Link as RouterLink, useSearchParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -16,6 +16,8 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 import PageBreadcrumbs from '@/components/common/PageBreadcrumbs';
 import PersonLink from '@/components/common/PersonLink';
+import JoinRouteButton from '@/components/events/JoinRouteButton';
+import { hasJoined, memberIds } from '@/lib/routes';
 import { useAppState } from '@/state/AppState';
 import { BRAND, RADIUS, cardSx } from '@/theme';
 
@@ -30,9 +32,11 @@ function stopsFor(route) {
  * A saved route and a draft in progress share the same drawing.
  */
 export default function RoutesPage() {
-  const { user, people, routes, spots, getSpot, createRoute, inviteToRoute, respondToRoute } = useAppState();
+  const { user, people, routes, spots, getSpot, createRoute, inviteToRoute, leaveRoute } = useAppState();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const requestedId = searchParams.get('route');
   const [mode, setMode] = useState(() => (routes.length ? 'view' : 'build'));
-  const [selectedId, setSelectedId] = useState(() => routes[0]?.id ?? null);
+  const [selectedId, setSelectedId] = useState(() => requestedId ?? routes[0]?.id ?? null);
   const [name, setName] = useState('');
   const [spotToAdd, setSpotToAdd] = useState('');
   const [draftIds, setDraftIds] = useState([]);
@@ -58,13 +62,22 @@ export default function RoutesPage() {
     setDraftIds([]);
     setSpotToAdd('');
     setError('');
+    setSearchParams({}, { replace: true });
   };
 
   const showRoute = (routeId) => {
     setSelectedId(routeId);
     setMode('view');
     setError('');
+    setSearchParams(routeId ? { route: routeId } : {}, { replace: true });
   };
+
+  useEffect(() => {
+    if (requestedId && routes.some((route) => route.id === requestedId)) {
+      setSelectedId(requestedId);
+      setMode('view');
+    }
+  }, [requestedId, routes]);
 
   const addStop = () => {
     if (!spotToAdd || draftIds.includes(spotToAdd)) return;
@@ -123,10 +136,10 @@ export default function RoutesPage() {
     if (updated) setInviteId('');
   };
 
-  const answer = async (status) => {
+  const leave = async () => {
     if (!selected) return;
     setResponding(true);
-    await respondToRoute(selected.id, status);
+    await leaveRoute(selected.id);
     setResponding(false);
   };
 
@@ -158,7 +171,7 @@ export default function RoutesPage() {
           A path you can share
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
-          Put stops in order, then invite people to join you on the walk.
+          Anyone can join a route. A photo is what confirms they came along.
         </Typography>
         </Box>
         {mode === 'view' ? (
@@ -193,9 +206,7 @@ export default function RoutesPage() {
               routes.map((route) => {
                 const active = mode === 'view' && selected?.id === route.id;
                 const count = stopsFor(route).length;
-                const coming =
-                  (route.invites || []).filter((invite) => invite.status === 'accepted').length +
-                  (route.hostId ? 1 : 0);
+                const coming = memberIds(route).length;
                 const mine = (route.invites || []).find((invite) => invite.userId === user?.id);
                 return (
                   <Box
@@ -223,7 +234,7 @@ export default function RoutesPage() {
                       {' · '}
                       {coming} {coming === 1 ? 'person' : 'people'}
                       {mine?.status === 'pending' ? ' · Invited' : ''}
-                      {mine?.status === 'accepted' ? ' · You’re going' : ''}
+                      {hasJoined(mine) ? ' · You’re going' : ''}
                     </Typography>
                   </Box>
                 );
@@ -372,19 +383,25 @@ export default function RoutesPage() {
                   {selected.description}
                 </Typography>
               ) : null}
-              {myInvite?.status === 'pending' ? (
+              {myInvite?.status === 'pending' && !hasJoined(myInvite) ? (
                 <Stack spacing={1.25} sx={{ mt: 2 }}>
                   <Typography variant="body2">
-                    You’re invited to walk this route.
+                    You’re invited. Take a photo to confirm you’re joining.
                   </Typography>
-                  <Stack direction="row" spacing={1}>
-                    <Button variant="contained" onClick={() => answer('accepted')} disabled={responding}>
-                      Join
-                    </Button>
-                    <Button variant="outlined" onClick={() => answer('declined')} disabled={responding}>
+                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} sx={{ alignItems: { sm: 'center' } }}>
+                    <JoinRouteButton routeId={selected.id} label="Join" />
+                    <Button variant="outlined" onClick={leave} disabled={responding}>
                       Not this time
                     </Button>
                   </Stack>
+                </Stack>
+              ) : !isHost && !hasJoined(myInvite) ? (
+                <Stack spacing={0.75} sx={{ mt: 2 }}>
+                  <JoinRouteButton
+                    routeId={selected.id}
+                    label="Join this route"
+                    hint="Take a photo to confirm you joined."
+                  />
                 </Stack>
               ) : null}
 
@@ -397,7 +414,7 @@ export default function RoutesPage() {
                 ) : null}
                 {(selected.invites || [])
                   .filter((invite) => invite.status !== 'declined')
-                  .filter((invite) => invite.status === 'accepted' || isHost || invite.userId === user?.id)
+                  .filter((invite) => hasJoined(invite) || ((isHost || invite.userId === user?.id) && invite.status === 'pending'))
                   .map((invite) => (
                     <Stack
                       key={invite.userId}
@@ -405,12 +422,28 @@ export default function RoutesPage() {
                       spacing={1}
                       sx={{ alignItems: 'center', justifyContent: 'space-between' }}
                     >
-                      <PersonLink
-                        personId={invite.userId}
-                        secondary={invite.status === 'accepted' ? 'Joined' : 'Invited'}
-                      />
-                      {invite.userId === user?.id && invite.status === 'accepted' ? (
-                        <Button size="small" onClick={() => answer('declined')} disabled={responding}>
+                      <Stack direction="row" spacing={1.25} sx={{ alignItems: 'center', minWidth: 0 }}>
+                        {invite.photoUrl ? (
+                          <Box
+                            component="img"
+                            src={invite.photoUrl}
+                            alt=""
+                            sx={{
+                              width: 44,
+                              height: 44,
+                              objectFit: 'cover',
+                              borderRadius: `${RADIUS.sm}px`,
+                              flexShrink: 0,
+                            }}
+                          />
+                        ) : null}
+                        <PersonLink
+                          personId={invite.userId}
+                          secondary={hasJoined(invite) ? 'Joined, photo confirmed' : 'Invited'}
+                        />
+                      </Stack>
+                      {invite.userId === user?.id && hasJoined(invite) ? (
+                        <Button size="small" onClick={leave} disabled={responding}>
                           Leave
                         </Button>
                       ) : null}

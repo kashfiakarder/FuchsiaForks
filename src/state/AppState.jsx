@@ -300,6 +300,54 @@ export function AppStateProvider({ children }) {
     [auth, fail],
   );
 
+  const joinRoute = useCallback(
+    async (routeId, file) => {
+      if (!file) {
+        setToast('Take a photo to confirm you joined.');
+        return null;
+      }
+      try {
+        const body = new FormData();
+        body.append('image', file);
+        const result = await apiFetch(auth, `/api/routes/${routeId}/join/`, {
+          method: 'POST',
+          body,
+        });
+        setCatalog((prev) => ({
+          ...prev,
+          routes: (prev.routes || []).map((route) => (route.id === result.route.id ? result.route : route)),
+        }));
+        setToast("You're on the route.");
+        return result.route;
+      } catch (err) {
+        fail(err, 'Could not join that route.');
+        return null;
+      }
+    },
+    [auth, fail],
+  );
+
+  const leaveRoute = useCallback(
+    async (routeId) => {
+      try {
+        const result = await apiFetch(auth, `/api/routes/${routeId}/leave/`, {
+          method: 'POST',
+          body: '{}',
+        });
+        setCatalog((prev) => ({
+          ...prev,
+          routes: (prev.routes || []).map((route) => (route.id === result.route.id ? result.route : route)),
+        }));
+        setToast('You left the route.');
+        return result.route;
+      } catch (err) {
+        fail(err, 'Could not leave that route.');
+        return null;
+      }
+    },
+    [auth, fail],
+  );
+
   const createEvent = useCallback(
     async (draft) => {
       const spot = spotsById[draft.spotId];
@@ -481,6 +529,8 @@ export function AppStateProvider({ children }) {
       createRoute,
       inviteToRoute,
       respondToRoute,
+      joinRoute,
+      leaveRoute,
       signedIn: isAuthenticated,
       catalogLoading: authLoading || (isAuthenticated && !catalog && !catalogError),
       catalogError,
@@ -523,6 +573,8 @@ export function AppStateProvider({ children }) {
       createRoute,
       inviteToRoute,
       respondToRoute,
+      joinRoute,
+      leaveRoute,
       isAuthenticated,
       authLoading,
       catalog,

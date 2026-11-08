@@ -242,6 +242,7 @@ export default function EventChatPage() {
                   >
                     <SceneImage
                       variant={conv.scene}
+                      slug={convSpot?.slug}
                       sx={{ width: 46, height: 46, flexShrink: 0 }}
                       radius={RADIUS.sm}
                     />
@@ -283,7 +284,7 @@ export default function EventChatPage() {
         {/* ---- Thread ---- */}
         <Paper sx={{ ...cardSx, display: 'flex', flexDirection: 'column', minHeight: { md: 640 } }}>
           <Stack direction="row" spacing={2} sx={{ alignItems: "center", p: 2 }}>
-            <SceneImage variant={event.scene} spotId={event.spotId} sx={{ width: 48, height: 48 }} radius={RADIUS.sm} />
+            <SceneImage variant={event.scene} slug={getSpot(event.spotId)?.slug} sx={{ width: 48, height: 48 }} radius={RADIUS.sm} />
             <Box sx={{ flex: 1, minWidth: 0 }}>
               <Typography variant="h4" component="h1" noWrap>
                 {event.title}

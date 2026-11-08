@@ -19,6 +19,7 @@ import PageBreadcrumbs from '@/components/common/PageBreadcrumbs';
 import { PersonAvatar } from '@/components/common/PersonAvatar';
 import ShareMenu from '@/components/common/ShareMenu';
 import EventCard from '@/components/events/EventCard';
+import RouteCard from '@/components/events/RouteCard';
 import PrivacyBadge from '@/components/profile/PrivacyBadge';
 import GalleryGrid, { LockedGallery } from '@/components/profile/GalleryGrid';
 import GalleryPostDialog from '@/components/profile/GalleryPostDialog';
@@ -26,6 +27,7 @@ import AddArtworkDialog from '@/components/profile/AddArtworkDialog';
 import ProfileSettingsDialog from '@/components/profile/ProfileSettingsDialog';
 import NotFoundPage from './NotFoundPage';
 import { formatLongDate } from '@/data/format';
+import { routesForPerson } from '@/lib/routes';
 import { useAppState } from '@/state/AppState';
 import { BRAND, RADIUS, cardSx, tintSx } from '@/theme';
 
@@ -51,7 +53,7 @@ function Stat({ value, label }) {
  */
 export default function ProfilePage({ own = false }) {
   const { userId } = useParams();
-  const { user, getProfile, canViewGallery, galleryFor, galleryCount, allEvents, joinedEventIds, isHosting } =
+  const { user, getProfile, canViewGallery, galleryFor, galleryCount, allEvents, joinedEventIds, isHosting, routes } =
     useAppState();
 
   const id = own ? user?.id : userId;
@@ -75,6 +77,10 @@ export default function ProfilePage({ own = false }) {
       : allEvents.filter((e) => e.hostId === id);
     return [...list].sort((a, b) => a.start.localeCompare(b.start));
   }, [person, own, allEvents, joinedEventIds, id]);
+
+  // Routes this person planned or joined. Membership is public, so the
+  // same list appears on their page for everyone who opens it.
+  const personRoutes = useMemo(() => routesForPerson(routes, id), [routes, id]);
 
   if (!person) return <NotFoundPage />;
 
@@ -191,6 +197,7 @@ export default function ProfilePage({ own = false }) {
           <Stat value={person.followers ?? 0} label="followers" />
           <Stat value={person.following ?? 0} label="following" />
           <Stat value={events.length} label={own ? 'upcoming' : 'hosting'} />
+          <Stat value={personRoutes.length} label={personRoutes.length === 1 ? 'route' : 'routes'} />
         </Stack>
       </Paper>
 
@@ -233,6 +240,17 @@ export default function ProfilePage({ own = false }) {
               </Box>
             }
           />
+          <Tab
+            value="routes"
+            label={
+              <Box component="span" sx={{ display: 'inline-flex', gap: 0.85, alignItems: 'baseline' }}>
+                Routes
+                <Box component="span" sx={{ fontSize: '0.78rem', color: 'text.secondary' }}>
+                  {personRoutes.length}
+                </Box>
+              </Box>
+            }
+          />
         </Tabs>
       </Box>
 
@@ -255,6 +273,40 @@ export default function ProfilePage({ own = false }) {
               {own ? (
                 <Button variant="contained" startIcon={<AddRoundedIcon />} onClick={() => setAddOpen(true)}>
                   Add to gallery
+                </Button>
+              ) : null}
+            </Paper>
+          )
+        ) : tab === 'routes' ? (
+          personRoutes.length ? (
+            <Box
+              sx={{
+                display: 'grid',
+                gap: 2.5,
+                gridTemplateColumns: {
+                  xs: '1fr',
+                  sm: 'repeat(2, minmax(0, 1fr))',
+                  lg: 'repeat(3, minmax(0, 1fr))',
+                },
+              }}
+            >
+              {personRoutes.map((route) => (
+                <RouteCard key={route.id} route={route} badgeFor={id} />
+              ))}
+            </Box>
+          ) : (
+            <Paper sx={{ ...cardSx, p: 5, textAlign: 'center' }}>
+              <Typography variant="h3">
+                {own ? 'No routes yet' : `${person.name} isn’t on a route yet`}
+              </Typography>
+              <Typography color="text.secondary" sx={{ mt: 1, mb: own ? 3 : 0 }}>
+                {own
+                  ? 'Join one from Discover, or plan your own. It will show up here for everyone.'
+                  : 'When they join a walk, it will show up here.'}
+              </Typography>
+              {own ? (
+                <Button component={RouterLink} to="/discover" variant="contained">
+                  Browse routes
                 </Button>
               ) : null}
             </Paper>

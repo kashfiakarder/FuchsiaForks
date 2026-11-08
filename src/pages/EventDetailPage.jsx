@@ -65,7 +65,7 @@ export default function EventDetailPage() {
           <Box sx={{ position: 'relative' }}>
             <SceneImage
               variant={event.scene}
-              spotId={event.spotId}
+              slug={spot.slug}
               height={{ xs: 220, sm: 300, md: 360 }}
               radius={RADIUS.lg}
               title={`Artists painting at ${spot.name}`}
@@ -277,6 +277,7 @@ export default function EventDetailPage() {
             <Paper variant="outlined" sx={{ p: 1.5, borderRadius: `${RADIUS.md}px`, display: 'flex', gap: 1.75 }}>
               <SceneImage
                 variant={spot.scene}
+                slug={spot.slug}
                 sx={{ width: 96, height: 76, flexShrink: 0 }}
                 radius={RADIUS.sm}
               />

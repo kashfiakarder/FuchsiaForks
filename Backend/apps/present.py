@@ -7,6 +7,7 @@ verbatim and does not convert time zones.
 
 from datetime import date, datetime
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
@@ -65,6 +66,7 @@ def present_person(profile: Profile) -> dict:
 def present_spot(spot: Spot) -> dict:
     return {
         "id": sid(spot.pk),
+        "slug": spot.slug,
         "lonLat": [float(spot.longitude), float(spot.latitude)],
         "region": spot.region,
         "name": spot.name,
@@ -86,7 +88,20 @@ def _paragraphs(text: str) -> list[str]:
     return parts
 
 
-def present_route(route: Route) -> dict:
+def present_route(route: Route, request=None) -> dict:
+    invites = []
+    for invite in route.invites.all():
+        try:
+            photo = invite.photo
+        except ObjectDoesNotExist:
+            photo = None
+        invites.append(
+            {
+                "userId": sid(invite.invitee_id),
+                "status": invite.status,
+                "photoUrl": file_url(photo.image, request) if photo else "",
+            }
+        )
     return {
         "id": sid(route.pk),
         "name": route.name,
@@ -96,10 +111,7 @@ def present_route(route: Route) -> dict:
             {"order": stop.order, "spotId": sid(stop.spot_id)}
             for stop in route.stops.all()
         ],
-        "invites": [
-            {"userId": sid(invite.invitee_id), "status": invite.status}
-            for invite in route.invites.all()
-        ],
+        "invites": invites,
     }
 
 
@@ -149,19 +161,25 @@ def present_message(message: EventMessage) -> dict:
     }
 
 
-def gallery_image_url(post: GalleryPost, request=None) -> str:
-    """Absolute URL for an uploaded gallery file, or "" when there is none.
+def file_url(field, request=None) -> str:
+    """Absolute URL for an uploaded file, or "" when there is none.
 
     S3 already returns an absolute URL. A file on local disk is stored as
     `/media/...`, which the frontend (a different origin) cannot load unless
     it is expanded against this request.
     """
-    if not post.image:
+    if not field:
         return ""
-    url = post.image.url
+    url = field.url
     if url.startswith(("http://", "https://")) or request is None:
         return url
     return request.build_absolute_uri(url)
+
+
+def gallery_image_url(post: GalleryPost, request=None) -> str:
+    if not post.image:
+        return ""
+    return file_url(post.image, request)
 
 
 def present_post(post: GalleryPost, request=None) -> dict:
@@ -199,7 +217,7 @@ def build_bootstrap(user, request=None) -> dict:
     profiles = list(Profile.objects.select_related("user").order_by("display_name", "id"))
     spots = list(Spot.objects.all().order_by("name"))
     routes = list(
-        Route.objects.prefetch_related("stops", "invites").order_by("-created_at", "name")
+        Route.objects.prefetch_related("stops", "invites__photo").order_by("-created_at", "name")
     )
     events = list(Event.objects.select_related("spot", "host").order_by("start_time"))
     reviews = list(Review.objects.all().order_by("-reviewed_on", "-created_at"))
@@ -241,7 +259,7 @@ def build_bootstrap(user, request=None) -> dict:
         "me": me,
         "people": people,
         "spots": [present_spot(spot) for spot in spots],
-        "routes": [present_route(route) for route in routes],
+        "routes": [present_route(route, request) for route in routes],
         "events": upcoming,
         "pastEvents": past,
         "reviews": reviews_by_spot,

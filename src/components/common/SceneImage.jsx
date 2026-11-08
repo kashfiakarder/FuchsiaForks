@@ -280,6 +280,7 @@ function PaletteArt({ gradId }) {
 export default function SceneImage({
   variant = 'creek',
   spotId,
+  slug,
   title,
   ratio,
   height,
@@ -318,7 +319,7 @@ export default function SceneImage({
   const grainId = `grain-${uid}`;
 
   const labelled = Boolean(title);
-  const imageSrc = SPOT_IMAGES[spotId];
+  const imageSrc = SPOT_IMAGES[slug] || SPOT_IMAGES[spotId];
 
   const svg =
     variant === 'palette' ? (
